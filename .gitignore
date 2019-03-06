@@ -1,0 +1,11 @@
+*.xcodeproj
+*.swp
+*.pyc
+debug.log
+npm-debug.log
+node_modules
+.DS_Store
+.tags*
+/build/
+/dist/
+.idea

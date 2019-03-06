@@ -1,0 +1,134 @@
+.issues {
+  &__area {
+    width: 100vw;
+    height: 100vh;
+    overflow-y: scroll;
+  }
+  &__item {
+    font-size: 1rem;
+    display: flex;
+    align-items: center;
+    background-color: $color-white;
+    //border-bottom: solid 1px $color-lightGray;
+    padding: 5px 0;
+    &:hover {
+      background-color: $color-hover;
+    }
+  }
+
+}
+
+.issueItems {
+  &__fav {
+    width: 50px;
+    min-width: 50px;
+    text-align: center;
+    font-size: 1.5rem;
+    padding-bottom: 4px;
+    &--none {
+      color: $color-white;
+    }
+  }
+  &__content {
+    position: relative;
+    &--updated {
+      background-color: $color-updated;
+    }
+    &--dogEar::after {
+      background-color: #fff;
+      position: absolute;
+      top: 0;
+      left: 0;
+      content: "";
+      border-style: solid;
+      border-width: 0 0 15px 15px;
+      border-color: transparent transparent #cccccc transparent;
+      z-index: 100;
+    }
+  }
+
+
+  &__header {
+    display: block;
+    line-height: 1;
+    margin-bottom: 3px;
+    overflow-x: hidden;
+    margin-left: 30px;
+  }
+
+  /*
+  title: issue.subject,
+  createDate: issue.created_on,
+  startDate: issue.start_date,
+  updateDate: issue.updated_on,
+  endDate: issue.due_date,
+  authorName: issue.author.name,
+  projectName: issue.project.name,
+  description: issue.description,
+  statusName: issue.status.name,
+  statusId: issue.status.id,
+  priorityId: issue.priority.id,
+  assigneeName: issue.assigned_to.name,
+  projectColorId: issu
+  */
+  &__id {
+    color: $color-lightGray;
+    min-width: 80px;
+    font-size: 0.7rem;
+    display: inline-block;
+    vertical-align: bottom;
+  }
+  &__projectName {
+    font-size: 0.7rem;
+    display: inline-block;
+    width: 120px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    vertical-align: bottom;
+  }
+  &__title {
+    font-size: 0.8rem;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    display: block;
+    transition: font-weight 200ms linear;
+    .issues__item:hover &{
+      font-weight: bolder;
+    }
+  }
+  &__assigneeName {
+    font-size: 0.8rem;
+    color: $color-darkGray;
+  }
+  &__assigneeIcon {
+    padding-right: 8px;
+  }
+
+  &__description {
+
+  }
+  &__footer{
+    margin: 5px 0 5px 15px;
+
+  }
+  &__limit {
+    color: $color-darkGray;
+    font-size: 0.7rem;
+    width: 170px;
+    display: inline-block;
+    &__caret{
+      padding: 0 8px 0 10px;
+    }
+    &--inProgress {
+      color: $mainColor-accent;
+    }
+    &--expired {
+      color: $color-red;
+    }
+  }
+  &__limitIcon {
+    padding-right: 8px;
+  }
+}

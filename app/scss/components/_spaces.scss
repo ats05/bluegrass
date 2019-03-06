@@ -1,0 +1,42 @@
+
+.spaces{
+  display: flex;
+  height: 100vh;
+  overflow: hidden;
+  &__tabArea {
+    display: flex;
+    flex-flow: column nowrap;
+    flex-shrink: 0;
+    background-color: $color-backgroundGray;
+  }
+  &__tab {
+    border-radius: 8px 0 0 8px;
+    display: flex;
+    align-items: center;
+    width: 30px;
+    flex: 1;
+    color: $color-darkGray;
+    background-color:$color-lightGray;
+    &Item {
+      display: inline-block;
+      margin: 0 auto;
+    }
+    &:hover {
+      background-color: $color-hover;
+      & .spaces__tabItem {
+        color: $mainColor-accent;
+      }
+    }
+    &--active {
+      transition: background-color 150ms cubic-bezier(255, 255, 255, 1) 0ms;
+      background-color: $color-white;
+      & .spaces__tabItem {
+        color: $mainColor-accent;
+      }
+    }
+  }
+  &__issueArea {
+    flex: 1;
+    overflow-y: scroll;
+  }
+}

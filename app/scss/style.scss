@@ -1,0 +1,24 @@
+@import "common/fonts";
+@import "common/colors";
+
+* {
+  transition-duration: 0.2s;
+  transition-property: background-color;
+  transition-timing-function: linear;
+  box-sizing: border-box;
+}
+
+
+body{
+  margin: 0;
+}
+
+svg {
+  width: 100%;
+  box-sizing: content-box;
+}
+
+
+@import "components/spaces";
+@import "components/issues";
+@import "components/singleIssue";

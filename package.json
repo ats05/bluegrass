@@ -1,0 +1,64 @@
+{
+  "name": "bluegrass",
+  "author": "Atsushi Onozawa",
+  "version": "0.1.0",
+  "license": "MIT",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ats05/bluegrass"
+  },
+  "babel": {
+    "sourceMaps": "inline",
+    "presets": [
+      "es2015",
+      "react"
+    ]
+  },
+  "scripts": {
+    "start": "electron .",
+    "build:app": "electron-packager . electron_test --platform darwin --arch x64",
+    "build:css": "gulp sass",
+    "build:watch": "gulp watch-assets"
+  },
+  "dependencies": {
+    "@fortawesome/fontawesome-svg-core": "^1.2.15",
+    "@fortawesome/free-brands-svg-icons": "^5.7.2",
+    "@fortawesome/free-regular-svg-icons": "^5.7.2",
+    "@fortawesome/free-solid-svg-icons": "^5.7.2",
+    "@fortawesome/react-fontawesome": "^0.1.4",
+    "@material-ui/core": "^3.9.2",
+    "axios": "^0.18.0",
+    "babel-preset-es2015": "^6.5.0",
+    "babel-preset-react": "^6.5.0",
+    "babel-register": "^6.5.2",
+    "classnames": "^2.2.6",
+    "electron-config": "^2.0.0",
+    "electron-fetch": "^1.3.0",
+    "electron-store": "^2.0.0",
+    "gulp": "^4.0.0",
+    "gulp-sass": "^4.0.2",
+    "i": "^0.3.6",
+    "jquery": "^3.3.1",
+    "material-ui": "^0.20.2",
+    "moment": "^2.24.0",
+    "react": "^16.8.3",
+    "react-com": "^1.0.6",
+    "react-dom": "^16.8.3",
+    "react-fontawesome": "^1.6.1",
+    "react-moment": "^0.8.4",
+    "react-native-base64": "0.0.2",
+    "textile": "0.0.1",
+    "textile-js": "^2.0.4"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-plugin-transform-react-jsx": "^6.5.2",
+    "electron-packager": "^13.1.0",
+    "electron-prebuilt": "^1.4.13",
+    "eslint": "^5.15.0",
+    "eslint-config-eslint": "^5.0.1",
+    "eslint-plugin-node": "^8.0.1",
+    "eslint-plugin-react": "^7.12.4"
+  }
+}

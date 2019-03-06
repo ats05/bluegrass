@@ -1,0 +1,101 @@
+import React from 'react';
+import textile from 'textile-js';
+import RedmineApi from "../script/redmineApi";
+import Moment from 'moment';
+import classnames from 'classnames';
+
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faTasks, faStopwatch, faCaretRight, faUser } from '@fortawesome/free-solid-svg-icons'
+import FlatButton from 'material-ui/FlatButton';
+import {fullWhite} from 'material-ui/styles/colors';
+import Icon from '@material-ui/core/Icon';
+
+export default class SingleIssue extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            singleIssue: ''
+        };
+    }
+    update(){
+
+    }
+    componentDidUpdate(){
+        this.state.singleIssue = this.props.singleIssue;
+        // 再度内容を問い合わせる
+        console.log(this.state.singleIssue);
+    }
+    render() {
+
+
+        let show = this.props.content !== '';
+        let issue = this.props.content;
+        if(!issue) return false;
+        let classes = classnames("singleIssue__area", {"singleIssue__area--open": show});
+
+        let moment = Moment.now();
+        let inProgress = Moment(issue.startDate) >= moment;
+        let expired = moment >= Moment(issue.endDate);
+
+        let limitClass = classnames(
+            "singleIssue__statusList__body",
+            "singleIssue__statusList__limit",
+            {"singleIssue__statusList__limit--inProgress": inProgress},
+            {"singleIssue__statusList__limit--expired": expired}
+        );
+        let startDate = Moment(issue.startDate).format("YYYY-MM-DD");
+        let endDate = Moment(issue.endDate).format("YYYY-MM-DD");
+
+
+        return (
+            <div className={classes}>
+                <FlatButton
+                />
+                {this.buildParentList(issue)}
+                <div className="singleIssue__title">{issue.title}</div>
+                {/*TODO ReadMoreボタン*/}
+                <div className="singleIssue__description singleIssue__description--close" dangerouslySetInnerHTML={{__html:textile(issue.description)}}></div>
+                <div className="singleIssue__statusList">
+                    <div className="singleIssue__statusList__row">
+                        <div className="singleIssue__statusList__title"><FontAwesomeIcon icon={faTasks} className="singleIssue__statusList__icon" />ステータス</div>
+                        <div className="singleIssue__statusList__body">{issue.statusName}</div>
+                    </div>
+                    <div className="singleIssue__statusList__row">
+                        <div className="singleIssue__statusList__title"><FontAwesomeIcon icon={faStopwatch} className="singleIssue__statusList__icon" />期限</div>
+                        <div className={limitClass}>{startDate}<FontAwesomeIcon icon={faCaretRight} className="singleIssue__statusList__limitIcon" />{endDate}</div>
+                    </div>
+                    <div className="singleIssue__statusList__row">
+                        <div className="singleIssue__statusList__title"><FontAwesomeIcon icon={faUser} className="singleIssue__statusList__icon" />担当者</div>
+                        <div className="singleIssue__statusList__body">{issue.assigneeName}</div>
+                    </div>
+                </div>
+                <div className="singleIssue__statusList">
+                    <div className="singleIssue__statusList__row">
+                        <div className="singleIssue__statusList__title"><FontAwesomeIcon icon={faTasks} className="singleIssue__statusList__icon" />ステータス</div>
+                        <div className="singleIssue__statusList__body">{issue.statusName}</div>
+                    </div>
+                    <div className="singleIssue__statusList__row">
+                        <div className="singleIssue__statusList__title"><FontAwesomeIcon icon={faStopwatch} className="singleIssue__statusList__icon" />期限</div>
+                        <div className={limitClass}>{startDate}<FontAwesomeIcon icon={faCaretRight} className="singleIssue__statusList__limitIcon" />{endDate}</div>
+                    </div>
+                    <div className="singleIssue__statusList__row">
+                        <div className="singleIssue__statusList__title"><FontAwesomeIcon icon={faUser} className="singleIssue__statusList__icon" />担当者</div>
+                        <div className="singleIssue__statusList__body">{issue.assigneeName}</div>
+                    </div>
+                </div>
+            </div>
+        );
+    }
+
+    buildParentList(issue){
+        // 親チケットを遡る
+        if(!issue.parentId) return;
+
+        return <div className="singleIssue__parentList">
+            <a className="singleIssue__parentList__parentItem">#{issue.parentId}</a>
+            <a className="singleIssue__parentList__parentItem">#{issue.parentId}</a>
+            <a className="singleIssue__parentList__parentItem">#{issue.parentId}</a>
+            <a className="singleIssue__parentList__currentItem">#{issue.id}</a>
+        </div>
+    }
+}

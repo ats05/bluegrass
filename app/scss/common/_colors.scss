@@ -1,0 +1,43 @@
+
+$project-colors: (
+  color-project1 : #EA5532,
+  color-project2 : #F6AD3C,
+  color-project3 : #FFF33F,
+  color-project4 : #AACF52,
+  color-project5 : #AACF52,
+  color-project6 : #00ADA9,
+  color-project7 : #00AFEC,
+  color-project8 : #187FC4,
+  color-project9 : #4D4398,
+  color-project10 : #A64A97,
+  color-project11 : #E85298,
+  color-project12 : #E9546B,
+);
+
+@each $name, $color in $project-colors {
+  .#{$name} {
+    color: $color;
+  }
+}
+
+
+
+
+$color-lightGray: #cccccc;
+$color-darkGray: #666666;
+$color-white: #ffffff;
+$color-red: #ff0000;
+
+$color-hover: #C9F0FF;
+$color-textBack: #EFEFF0;
+
+$color-updated: #FFFBD5;
+$color-dogEar: #e4d51b;
+
+$color-backgroundGray: #f8f8f8;
+
+$mainColor-dark: #2B4141;
+$mainColor-accent: #0EB1D2;
+$mainColor-highLight: #34E4EA;
+$mainColor-shadow: #8AB9B5;
+$mainColor-quiet: #C8C2AE
