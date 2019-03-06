@@ -1,4 +1,3 @@
-
 <p align="center">
 <img src="etc/mv.png" "bluegrass">
 </p>
