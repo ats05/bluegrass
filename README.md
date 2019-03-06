@@ -1,6 +1,7 @@
 
-![bluegrass](etc/mv.png)
-
+<p align="center">
+<img src="etc/mv.png" "bluegrass">
+</p>
 
 Redmine、Backlogに対応したシンプルなタスクビュアーです。
 (鋭意製作中)
