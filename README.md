@@ -1,5 +1,5 @@
 
-![bluegrass](app/img/mv.png)
+![bluegrass](etc/mv.png)
 
 
 Redmine、Backlogに対応したシンプルなタスクビュアーです。
