@@ -17,6 +17,7 @@ export default class RedmineApi extends Api{
     parseIssues(json){
         let results = [];
         json.data.issues.forEach( (issue) => {
+            console.log(issue);
             results[issue.id] = {
                 id: issue.id,
                 title: issue.subject,
@@ -48,6 +49,19 @@ export default class RedmineApi extends Api{
         let payload = Object.assign(this.params, params);
 
         return new Promise( (resolve, reject) => {
+            axios.get(this.getUrl(path.issues), {params: payload})
+                .then(response => resolve(this.parseIssues(response)))
+                .catch(error => reject(error))
+            ;
+        });
+    }
+    issue(issueId) {
+        let params = {
+            assigned_to_id: "me"
+        };
+        let payload = Object.assign(this.params, params);
+
+        return new Promise((resolve, reject) => {
             axios.get(this.getUrl(path.issues), {params: payload})
                 .then(response => resolve(this.parseIssues(response)))
                 .catch(error => reject(error))

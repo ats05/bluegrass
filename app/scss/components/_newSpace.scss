@@ -1,0 +1,21 @@
+
+.newSpace {
+  &__window {
+    position: absolute;
+    top:0;
+    left: 0;
+    display: block;
+    width: 100vw;
+    height: 100vh;
+    background-color: $color-white;
+    align-items: center;
+  }
+  &__content {
+    display: flex;
+    flex-direction: column;
+    width: 61vw;
+    height: 100%;
+    align-items: center;
+    margin: 0 auto;
+  }
+}

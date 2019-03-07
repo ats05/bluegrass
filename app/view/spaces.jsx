@@ -8,6 +8,7 @@ import {faStar as farStar} from '@fortawesome/free-regular-svg-icons';
 
 import Issues from "./issues";
 import Store from 'electron-config';
+import NewSpaces from "./newSpace";
 
 
 export default class Spaces extends React.Component {
@@ -15,24 +16,28 @@ export default class Spaces extends React.Component {
         super(props);
         this.state = {
             spaces: [],
-            selectedIndex: 0
+            selectedIndex: 0,
+            noConfig: true
         };
 
         const store = new Store();
         let config = store.get('spaces');
         if (!config) {
-            config = [
-                {
-                    url: 'http://hogeohge/',
-                    key: 'xxxxxxxx'
-                }];
             store.set('spaces', config);
         }
         this.state.spaces = config;
+        this.state.noConfig = true;
+    }
 
+    // NewSpacesで入力したスペース設定を取り込む
+    setConfig(config) {
+        this.state.noConfig = false;
     }
 
     render() {
+
+        if(this.state.noConfig) return <NewSpaces complete={this.setConfig}/>
+
         return (
             <div className="spaces">
                 <div className="spaces__tabArea">
