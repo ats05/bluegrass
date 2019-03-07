@@ -199,7 +199,7 @@ svg {
   box-shadow: -5px 0 10px rgba(0, 0, 0, 0.2);
   padding: 30px 40px; }
   .singleIssue__area--open {
-    width: 70vw;
+    width: 690px;
     background-color: #ffffff;
     opacity: 1; }
 
@@ -257,7 +257,7 @@ svg {
     width: 150px;
     color: #cccccc; }
   .singleIssue__statusList__body {
-    color: #0EB1D2; }
+    color: #666666; }
   .singleIssue__statusList__limit {
     color: #666666; }
     .singleIssue__statusList__limitIcon {

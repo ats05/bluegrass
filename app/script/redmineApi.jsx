@@ -30,6 +30,7 @@ export default class RedmineApi extends Api{
                 statusName: issue.status.name,
                 statusId: issue.status.id,
                 priorityId: issue.priority.id,
+                assigneeId: issue.assigned_to.id,
                 assigneeName: issue.assigned_to.name,
                 projectColorId: issue.project.id % self.PROJECT_COLOR_MAX,
                 parentId: issue.parent ? issue.parent.id : '',
@@ -39,20 +40,31 @@ export default class RedmineApi extends Api{
         });
         return results;
     }
-    // チケット一覧取得
+    // チケット一覧取得（parseして返す）
     issues(project_id = null, status_id = null, sort = "updated_on") {
         let params = {
             assigned_to_id: "me"
         };
         let payload = Object.assign(this.params, params);
 
-        return axios.get(this.getUrl(path.issues), {params: payload});
+        return new Promise( (resolve, reject) => {
+            axios.get(this.getUrl(path.issues), {params: payload})
+                .then(response => resolve(this.parseIssues(response)))
+                .catch(error => reject(error))
+            ;
+        });
     }
     updateIssues(){
         let params = {
             assigned_to_id: "me"
         };
         let payload = Object.assign(this.params, params);
-        return axios.get(this.getUrl(path.issues), {params: payload});
+
+        return new Promise( (resolve, reject) => {
+            axios.get(this.getUrl(path.issues), {params: payload})
+                .then(response => resolve(this.parseIssues(response)))
+                .catch(error => reject(error))
+            ;
+        });
     }
 }

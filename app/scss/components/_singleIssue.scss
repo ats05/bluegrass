@@ -12,7 +12,7 @@
     box-shadow: -5px 0 10px rgba(0,0,0,0.2);
     padding: 30px 40px;
     &--open {
-      width: 70vw;
+      width: 690px;
       background-color: $color-white;
       opacity: 1;
     }
@@ -59,6 +59,7 @@
 .singleIssue__parentList{
   font-size: 0.7rem;
   margin-bottom: 10px;
+  height: 20px;
   &__parentItem {
     color: $color-darkGray;
     &:after {
@@ -92,7 +93,7 @@
   }
 
   &__body {
-    color: $mainColor-accent;
+    color: $color-darkGray;
   }
 
   &__limit {

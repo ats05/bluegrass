@@ -38,11 +38,12 @@ export default class Issues extends React.Component {
         });
         this.setState({singleIssue: issue});
         console.log(this.state.singleIssue);
+        console.log(issue);
     }
     // 更新確認
     updateIssues() {
         this.api.updateIssues().then( (response) => {
-            let updates = this.api.compareUpdates(this.state.issues, this.api.parseIssues(response));
+            let updates = this.api.compareUpdates(this.state.issues, response);
 
             let issueList = [];
             updates.forEach( (issue) => {
@@ -58,7 +59,7 @@ export default class Issues extends React.Component {
     // 0からのデータ取得
     getIssues(){
         this.api.issues().then( (response) => {
-            let issues = this.api.parseIssues(response);
+            let issues = response;
             let issueList = [];
             issues.forEach( (issue) => {
                 issueList.push(this.createCassette(issue));
