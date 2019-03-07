@@ -19,8 +19,16 @@ export default class Spaces extends React.Component {
         };
 
         const store = new Store();
-        console.log(store.get('spaces'));
-        this.state.spaces = store.get('spaces');
+        let config = store.get('spaces');
+        if (!config) {
+            config = [
+                {
+                    url: 'http://hogeohge/',
+                    key: 'xxxxxxxx'
+                }];
+            store.set('spaces', config);
+        }
+        this.state.spaces = config;
 
     }
 
