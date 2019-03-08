@@ -3,7 +3,8 @@ import axios from 'axios';
 import Api from './api'
 
 let path = {
-    issues: "api/v2/issues"
+    issues: "/api/v2/issues",
+    projects: "/api/v2/projects"
 };
 
 export default class BacklogApi extends Api{
@@ -17,11 +18,11 @@ export default class BacklogApi extends Api{
         json.data.forEach( (issue) => {
             console.log(issue);
             results[issue.id] = {
-                id: issue.issueKey,
+                id: issue.id,
                 title: issue.summary,
                 createDate: issue.created,
                 startDate: issue.startDate,
-                updateDate: issue.updated_on,
+                updateDate: issue.updated,
                 endDate: issue.dueDate,
                 authorName: issue.createdUser.name,
                 projectName: issue.projectId,   //TODO nameを取れるようにする
@@ -37,7 +38,22 @@ export default class BacklogApi extends Api{
         return results;
     }
 
-    issues(project_id = null, status_id = null, assigned_to_id = "me", sort = "updated_on") {
-        return axios.get(this.getUrl(path.issues), {params: this.params});
+    issues(project_id = null, status_id = null, assigned_to_id = "me", sort = "updated") {
+        let params = {
+            assigneeId: [],
+            sort: sort,
+            order: 'desc'
+        };
+        let payload = Object.assign(this.params, params);
+
+        return new Promise( (resolve, reject) => {
+            axios.get(this.getUrl(path.issues), {params: payload})
+                .then(response => resolve(this.parseIssues(response)))
+                .catch(error => reject(error))
+            ;
+        });
+    }
+
+    updateIssues(){
     }
 }
