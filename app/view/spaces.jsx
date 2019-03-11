@@ -23,10 +23,15 @@ export default class Spaces extends React.Component {
         const store = new Store();
         let config = store.get('spaces');
         if (!config) {
-            store.set('spaces', config);
+            this.state.noConfig = true;
+            // store.set('spaces', config);
         }
-        this.state.spaces = config;
-        this.state.noConfig = true;
+        else {
+            this.state.spaces = config;
+            this.state.noConfig = false;
+        }
+        
+
     }
 
     // NewSpacesで入力したスペース設定を取り込む
