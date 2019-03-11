@@ -1,0 +1,78 @@
+
+.comments{
+  &__wrap {
+
+  }
+
+  &__button {
+    position: fixed;
+    bottom: 0;
+    right: 690px;
+    width: 30px;
+    background-color: $color-white;
+    height: 95vh;
+    text-align: center;
+    padding-top: 40px;
+    border-radius: 8px 0 0 8px;
+    box-shadow: -5px 0 10px rgba(0,0,0,0.2);
+    color: $color-darkGray;
+    &:hover {
+      background-color: $color-hover;
+      color: $mainColor-accent;
+    }
+  }
+  &__area {
+    overflow-y: scroll;
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    height:80vh;
+    transition: width 600ms cubic-bezier(0, 0, 0.1, 0.99), background-color 600ms cubic-bezier(0, 0, 0.1, 0.99), opacity 600ms cubic-bezier(0, 0, 0.1, 0.99);
+    width: 0vh;
+    opacity: 0;
+    box-shadow: -5px 0 10px rgba(0,0,0,0.2);
+    padding: 30px 40px;
+    &--open {
+      width: 480px;
+      background-color: $color-white;
+      opacity: 1;
+    }
+
+
+  }
+
+  &__title {
+    font-size: 1rem;
+    margin: 0 20px 15px;
+    font-weight: bold;
+  }
+  &__description {
+    border: solid 1px $color-textBack;
+    background-color: $color-textBack;
+    font-size: 0.7rem;
+    border-radius: 5px;
+    padding: 10px;
+    word-break: break-word;
+    &--close {
+      max-height: 400px;
+      overflow: scroll;
+    }
+
+    h2 {
+      margin: 10px 0 8px;
+    }
+    h3 {
+      margin: 8px 0 5px;
+    }
+    ol, ul,  p{
+      margin: 5px 0;
+    }
+    pre{
+      font-family: 'Inconsolata', monospace;
+      margin: 5px 0;
+      padding: 5px;
+      background-color: $color-white;
+      border-radius: 5px;
+    }
+  }
+}

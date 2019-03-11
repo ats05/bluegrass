@@ -4,33 +4,39 @@ import RedmineApi from "../script/redmineApi";
 import Moment from 'moment';
 import classnames from 'classnames';
 
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faTasks, faStopwatch, faCaretRight, faUser , faUserEdit, faEdit, faSyncAlt} from '@fortawesome/free-solid-svg-icons'
+import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
+import {
+    faTasks,
+    faStopwatch,
+    faCaretRight,
+    faUser,
+    faUserEdit,
+    faEdit,
+    faSyncAlt
+} from '@fortawesome/free-solid-svg-icons'
 import FlatButton from 'material-ui/FlatButton';
 import {fullWhite} from 'material-ui/styles/colors';
 import Icon from '@material-ui/core/Icon';
+import AppBar from '@material-ui/core/AppBar';
+import Toolbar from '@material-ui/core/Toolbar';
+import Comments from "./comments";
 
 export default class SingleIssue extends React.Component {
     constructor(props) {
         super(props);
-        this.state = {
-            singleIssue: ''
-        };
+        this.state = {};
     }
-    update(){
 
+    shouldComponentUpdate(nextProps, nextState) {
+        if (this.props.api === null) return false;
+        if (this.props.issue === null) return false;
+        return true;
     }
-    componentDidUpdate(){
-        this.state.singleIssue = this.props.singleIssue;
-        //TODO 再度内容を問い合わせる
-        console.log(this.state.singleIssue);
-    }
+
     render() {
-
-
-        let show = this.props.content !== '';
-        let issue = this.props.content;
-        if(!issue) return false;
+        let show = this.props.issue !== '';
+        let issue = this.props.issue;
+        if (!issue) return false;
         let classes = classnames("singleIssue__area", {"singleIssue__area--open": show});
 
         let moment = Moment.now();
@@ -49,49 +55,66 @@ export default class SingleIssue extends React.Component {
         let updateDate = Moment(issue.updateDate).format("YYYY-MM-DD HH:mm:ss");
 
         return (
-            <div className={classes}>
-                {/*<FlatButton/>*/}
-                <div className="singleIssue__parentList">
-                    {this.buildParentList(issue)}
-                </div>
-                <div className="singleIssue__title">{issue.title}</div>
-                {/*TODO ReadMoreボタン*/}
-                <div className="singleIssue__description singleIssue__description--close" dangerouslySetInnerHTML={{__html:textile(issue.description)}}></div>
-                <div className="singleIssue__statusList">
-                    <div className="singleIssue__statusList__row">
-                        <div className="singleIssue__statusList__title"><FontAwesomeIcon icon={faTasks} className="singleIssue__statusList__icon" />ステータス</div>
-                        <div className="singleIssue__statusList__body">{issue.statusName}</div>
+            <div>
+                <Comments comments={issue.comments}/>
+                <div className={classes}>
+                    <div className="singleIssue__parentList">
+                        {this.buildParentList(issue)}
                     </div>
-                    <div className="singleIssue__statusList__row">
-                        <div className="singleIssue__statusList__title"><FontAwesomeIcon icon={faStopwatch} className="singleIssue__statusList__icon" />期限</div>
-                        <div className={limitClass}>{startDate}<FontAwesomeIcon icon={faCaretRight} className="singleIssue__statusList__limitIcon" />{endDate}</div>
+                    <div className="singleIssue__title">{issue.title}</div>
+                    {/*TODO ReadMoreボタン*/}
+                    <div className="singleIssue__description singleIssue__description--close"
+                         dangerouslySetInnerHTML={{__html: textile(issue.description)}}></div>
+                    <div className="singleIssue__statusList">
+                        <div className="singleIssue__statusList__row">
+                            <div className="singleIssue__statusList__title"><FontAwesomeIcon icon={faTasks}
+                                                                                             className="singleIssue__statusList__icon"/>ステータス
+                            </div>
+                            <div className="singleIssue__statusList__body">{issue.statusName}</div>
+                        </div>
+                        <div className="singleIssue__statusList__row">
+                            <div className="singleIssue__statusList__title"><FontAwesomeIcon icon={faStopwatch}
+                                                                                             className="singleIssue__statusList__icon"/>期限
+                            </div>
+                            <div className={limitClass}>{startDate}<FontAwesomeIcon icon={faCaretRight}
+                                                                                    className="singleIssue__statusList__limitIcon"/>{endDate}
+                            </div>
+                        </div>
+                        <div className="singleIssue__statusList__row">
+                            <div className="singleIssue__statusList__title"><FontAwesomeIcon icon={faUser}
+                                                                                             className="singleIssue__statusList__icon"/>担当者
+                            </div>
+                            <div className="singleIssue__statusList__body">{issue.assigneeName}</div>
+                        </div>
                     </div>
-                    <div className="singleIssue__statusList__row">
-                        <div className="singleIssue__statusList__title"><FontAwesomeIcon icon={faUser} className="singleIssue__statusList__icon" />担当者</div>
-                        <div className="singleIssue__statusList__body">{issue.assigneeName}</div>
-                    </div>
-                </div>
-                <div className="singleIssue__statusList">
-                    <div className="singleIssue__statusList__row">
-                        <div className="singleIssue__statusList__title"><FontAwesomeIcon icon={faEdit} className="singleIssue__statusList__icon" />作成日</div>
-                        <div className="singleIssue__statusList__body">{createDate}</div>
-                    </div>
-                    <div className="singleIssue__statusList__row">
-                        <div className="singleIssue__statusList__title"><FontAwesomeIcon icon={faSyncAlt} className="singleIssue__statusList__icon" />更新日</div>
-                        <div className="singleIssue__statusList__body">{updateDate}</div>
-                    </div>
-                    <div className="singleIssue__statusList__row">
-                        <div className="singleIssue__statusList__title"><FontAwesomeIcon icon={faUserEdit} className="singleIssue__statusList__icon" />作成者</div>
-                        <div className="singleIssue__statusList__body">{issue.authorName}</div>
+                    <div className="singleIssue__statusList">
+                        <div className="singleIssue__statusList__row">
+                            <div className="singleIssue__statusList__title"><FontAwesomeIcon icon={faEdit}
+                                                                                             className="singleIssue__statusList__icon"/>作成日
+                            </div>
+                            <div className="singleIssue__statusList__body">{createDate}</div>
+                        </div>
+                        <div className="singleIssue__statusList__row">
+                            <div className="singleIssue__statusList__title"><FontAwesomeIcon icon={faSyncAlt}
+                                                                                             className="singleIssue__statusList__icon"/>更新日
+                            </div>
+                            <div className="singleIssue__statusList__body">{updateDate}</div>
+                        </div>
+                        <div className="singleIssue__statusList__row">
+                            <div className="singleIssue__statusList__title"><FontAwesomeIcon icon={faUserEdit}
+                                                                                             className="singleIssue__statusList__icon"/>作成者
+                            </div>
+                            <div className="singleIssue__statusList__body">{issue.authorName}</div>
+                        </div>
                     </div>
                 </div>
             </div>
         );
     }
 
-    buildParentList(issue){
+    buildParentList(issue) {
         // 親チケットを遡る
-        if(!issue.parentId) return ;
+        if (!issue.parentId) return;
 
         let parents = {};
 
@@ -102,7 +125,5 @@ export default class SingleIssue extends React.Component {
             <a className="singleIssue__parentList__currentItem">#{issue.id}</a>
         </div>
     }
-    getParentIssue(parentId){
 
-    }
 }
