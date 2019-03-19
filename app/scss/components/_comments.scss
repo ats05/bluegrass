@@ -16,9 +16,9 @@
     border-radius: 8px 0 0 8px;
     box-shadow: -5px 0 10px rgba(0,0,0,0.2);
     color: $color-darkGray;
-    transition-duration: 0.2s;
+    transition-duration: 0.1s;
     transition-property: right;
-    transition-timing-function: linear;
+    transition-timing-function: ease-out;
     &:hover {
       background-color: $color-hover;
       color: $mainColor-accent;
@@ -34,9 +34,9 @@
     right: 0;
     height:95vh;
     width: 480px;
-    transition-duration: 0.2s;
-    transition-property: width;
-    transition-timing-function: linear;
+    transition-duration: 0.1s;
+    transition-property: right;
+    transition-timing-function: ease-out;
     box-shadow: -5px 0 10px rgba(0,0,0,0.2);
     padding: 30px 40px;
     &--open {

@@ -280,9 +280,9 @@ svg {
   border-radius: 8px 0 0 8px;
   box-shadow: -5px 0 10px rgba(0, 0, 0, 0.2);
   color: #666666;
-  transition-duration: 0.2s;
+  transition-duration: 0.1s;
   transition-property: right;
-  transition-timing-function: linear; }
+  transition-timing-function: ease-out; }
   .comments__button:hover {
     background-color: #C9F0FF;
     color: #0EB1D2; }
@@ -296,9 +296,9 @@ svg {
   right: 0;
   height: 95vh;
   width: 480px;
-  transition-duration: 0.2s;
-  transition-property: width;
-  transition-timing-function: linear;
+  transition-duration: 0.1s;
+  transition-property: right;
+  transition-timing-function: ease-out;
   box-shadow: -5px 0 10px rgba(0, 0, 0, 0.2);
   padding: 30px 40px; }
   .comments__area--open {
