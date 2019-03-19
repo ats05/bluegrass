@@ -35,8 +35,13 @@ export default class Comments extends React.Component {
         // this.setState({show: true});
         nextProps.comments.forEach( (comment) => {
             comments.push(
-                <div className="comments__header">
-                    <span className="comments__authorName">{comment.authorName}</span>
+                <div>
+                    <div className="comments__header">
+                        <span className="comments__authorName">{comment.authorName}</span>
+                    </div>
+                    <div>
+                        <div className="comments__body">{comment.body}</div>
+                    </div>
                 </div>
             );
         });
@@ -50,16 +55,16 @@ export default class Comments extends React.Component {
 
         let buttonClassNames = classnames("comments__button", {"comments__button--open": this.state.open});
         let areaClassNames = classnames("comments__area", {"comments__area--open": this.state.open});
-        // let areaClassNames =
+
         if (!this.state.show) return "";
 
         return (
             <div className="comments__wrap">
+                <div className={areaClassNames}>
+                    {this.state.comments}
+                </div>
                 <div className={buttonClassNames} onClick={this.openComments}>
                     <FontAwesomeIcon icon={faComments} className="comments__buttonIcon"/>
-                </div>
-                <div className="comments__area">
-
                 </div>
             </div>
         )

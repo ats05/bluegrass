@@ -46,7 +46,7 @@ export default class RedmineApi extends Api{
 
         return new Promise( (resolve, reject) => {
             axios.get(url, {params: payload})
-                .then(response => resolve(this._parseIsuse(response.data.issue)))
+                .then(response => resolve(this._parseIssue(response.data.issue)))
                 .catch(error => reject(error))
             ;
         });
@@ -90,10 +90,11 @@ export default class RedmineApi extends Api{
     _parseComments(journals) {
         let comments = [];
         if(!journals) return null;
+        console.log(journals);
         journals.forEach( (comment) => {
             comments.push({
                 createDate: comment.created_on,
-                body: comment.note,
+                body: comment.notes,
                 authorName: comment.user.name
             });
         });
