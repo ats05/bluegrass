@@ -8,6 +8,10 @@ let path = {
     issue: "issues"
 };
 
+const ISSUE_PARAMS = {
+
+};
+
 export default class RedmineApi extends Api{
     constructor(params) {
         super(params.url, {
@@ -95,9 +99,13 @@ export default class RedmineApi extends Api{
             comments.push({
                 createDate: comment.created_on,
                 body: comment.notes,
-                authorName: comment.user.name
+                authorName: comment.user.name,
+                detail: comment.details
             });
         });
         return comments;
+    }
+    _parseCommentDetail(detail) {
+
     }
 }

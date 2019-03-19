@@ -43,7 +43,7 @@ export default class Comments extends React.Component {
                             <span className="comment__date">{Moment(comment.createDate).format("YYYY-MM-DD HH:mm:ss")}</span>
                         </div>
                         <div>
-                            <div className="comment__body">{comment.body}</div>
+                            <div className="comment__body" dangerouslySetInnerHTML={{__html: textile(comment.body)}}></div>
                         </div>
                     </CardContent>
                 </Card>
