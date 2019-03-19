@@ -2,9 +2,10 @@ import React from 'react';
 import textile from 'textile-js';
 import Moment from 'moment';
 import classnames from 'classnames';
-
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {faComments, faStopwatch} from '@fortawesome/free-solid-svg-icons'
+import Card from '@material-ui/core/Card';
+import CardContent from '@material-ui/core/CardContent';
 import FlatButton from 'material-ui/FlatButton';
 import {fullWhite} from 'material-ui/styles/colors';
 import Icon from '@material-ui/core/Icon';
@@ -35,21 +36,23 @@ export default class Comments extends React.Component {
         // this.setState({show: true});
         nextProps.comments.forEach( (comment) => {
             comments.push(
-                <div>
-                    <div className="comments__header">
-                        <span className="comments__authorName">{comment.authorName}</span>
-                    </div>
-                    <div>
-                        <div className="comments__body">{comment.body}</div>
-                    </div>
-                </div>
+                <Card className="comments__card">
+                    <CardContent>
+                        <div className="comments__header">
+                            <span className="comment__authorName">{comment.authorName}</span>
+                            <span className="comment__date">{Moment(comment.createDate).format("YYYY-MM-DD HH:mm:ss")}</span>
+                        </div>
+                        <div>
+                            <div className="comment__body">{comment.body}</div>
+                        </div>
+                    </CardContent>
+                </Card>
             );
         });
         this.setState({comments: comments, show: true});
     }
     openComments() {
         this.setState({open: !this.state.open});
-        console.log("open!");
     }
     render() {
 

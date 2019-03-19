@@ -3,7 +3,6 @@
   &__wrap {
 
   }
-
   &__button {
     position: fixed;
     bottom: 0;
@@ -32,53 +31,39 @@
     position: fixed;
     bottom: 0;
     right: 0;
-    height:95vh;
+    height: 95vh;
     width: 480px;
     transition-duration: 0.1s;
     transition-property: right;
     transition-timing-function: ease-out;
-    box-shadow: -5px 0 10px rgba(0,0,0,0.2);
-    padding: 30px 40px;
+    box-shadow: -5px 0 10px rgba(0, 0, 0, 0.2);
+    padding: 10px;
     &--open {
       right: 690px;
-      background-color: $color-white;
+      background-color: $color-veryLightGray;
     }
 
-
   }
-
-  &__title {
-    font-size: 1rem;
-    margin: 0 20px 15px;
-    font-weight: bold;
+  &__card {
+    margin-bottom: 10px;
   }
-  &__description {
-    border: solid 1px $color-textBack;
-    background-color: $color-textBack;
+}
+
+.comment {
+
+  &__header {
+    margin-bottom: 10px;
+  }
+  &__authorName {
     font-size: 0.7rem;
-    border-radius: 5px;
-    padding: 10px;
-    word-break: break-word;
-    &--close {
-      max-height: 400px;
-      overflow: scroll;
-    }
-
-    h2 {
-      margin: 10px 0 8px;
-    }
-    h3 {
-      margin: 8px 0 5px;
-    }
-    ol, ul,  p{
-      margin: 5px 0;
-    }
-    pre{
-      font-family: 'Inconsolata', monospace;
-      margin: 5px 0;
-      padding: 5px;
-      background-color: $color-white;
-      border-radius: 5px;
-    }
+    color: $color-darkGray;
+    margin-right: 5px;
+  }
+  &__date{
+    font-size: 0.6rem;
+    color: $color-lightGray;
+  }
+  &__body {
+    font-size: 0.7rem;
   }
 }
