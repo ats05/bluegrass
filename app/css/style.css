@@ -295,7 +295,7 @@ svg {
   bottom: 0;
   right: 0;
   height: 95vh;
-  width: 0;
+  width: 480px;
   transition-duration: 0.2s;
   transition-property: width;
   transition-timing-function: linear;
@@ -303,7 +303,6 @@ svg {
   padding: 30px 40px; }
   .comments__area--open {
     right: 690px;
-    width: 480px;
     background-color: #ffffff; }
 
 .comments__title {
