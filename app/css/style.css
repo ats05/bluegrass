@@ -280,9 +280,9 @@ svg {
   border-radius: 8px 0 0 8px;
   box-shadow: -5px 0 10px rgba(0, 0, 0, 0.2);
   color: #666666;
-  transition-duration: 0.2s;
+  transition-duration: 0.1s;
   transition-property: right;
-  transition-timing-function: linear; }
+  transition-timing-function: ease-out; }
   .comments__button:hover {
     background-color: #C9F0FF;
     color: #0EB1D2; }
@@ -296,39 +296,29 @@ svg {
   right: 0;
   height: 95vh;
   width: 480px;
-  transition-duration: 0.2s;
-  transition-property: width;
-  transition-timing-function: linear;
+  transition-duration: 0.1s;
+  transition-property: right;
+  transition-timing-function: ease-out;
   box-shadow: -5px 0 10px rgba(0, 0, 0, 0.2);
-  padding: 30px 40px; }
+  padding: 10px; }
   .comments__area--open {
     right: 690px;
-    background-color: #ffffff; }
+    background-color: #fafafa; }
 
-.comments__title {
-  font-size: 1rem;
-  margin: 0 20px 15px;
-  font-weight: bold; }
+.comments__card {
+  margin-bottom: 10px; }
 
-.comments__description {
-  border: solid 1px #EFEFF0;
-  background-color: #EFEFF0;
+.comment__header {
+  margin-bottom: 10px; }
+
+.comment__authorName {
   font-size: 0.7rem;
-  border-radius: 5px;
-  padding: 10px;
-  word-break: break-word; }
-  .comments__description--close {
-    max-height: 400px;
-    overflow: scroll; }
-  .comments__description h2 {
-    margin: 10px 0 8px; }
-  .comments__description h3 {
-    margin: 8px 0 5px; }
-  .comments__description ol, .comments__description ul, .comments__description p {
-    margin: 5px 0; }
-  .comments__description pre {
-    font-family: 'Inconsolata', monospace;
-    margin: 5px 0;
-    padding: 5px;
-    background-color: #ffffff;
-    border-radius: 5px; }
+  color: #666666;
+  margin-right: 5px; }
+
+.comment__date {
+  font-size: 0.6rem;
+  color: #cccccc; }
+
+.comment__body {
+  font-size: 0.7rem; }
