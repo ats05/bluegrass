@@ -20,7 +20,6 @@ export default class Api {
                 let old = currentIssues[update.id];
                 if(Moment(update.updateDate) > Moment(old.updateDate)) {
                     console.log("updated");
-                    console.log(update.id);
                     update.updatedFlag = true;
                     currentIssues[update.id] = update;
                 }

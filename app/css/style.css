@@ -233,7 +233,8 @@ svg {
 
 .singleIssue__parentList {
   font-size: 0.7rem;
-  margin-bottom: 10px; }
+  margin-bottom: 10px;
+  height: 20px; }
   .singleIssue__parentList__parentItem {
     color: #666666; }
     .singleIssue__parentList__parentItem:after {
@@ -266,3 +267,58 @@ svg {
       color: #0EB1D2; }
     .singleIssue__statusList__limit--expired {
       color: #ff0000; }
+
+.comments__button {
+  position: fixed;
+  bottom: 0;
+  right: 690px;
+  width: 30px;
+  background-color: #ffffff;
+  height: 95vh;
+  text-align: center;
+  padding-top: 40px;
+  border-radius: 8px 0 0 8px;
+  box-shadow: -5px 0 10px rgba(0, 0, 0, 0.2);
+  color: #666666;
+  transition-duration: 0.1s;
+  transition-property: right;
+  transition-timing-function: ease-out; }
+  .comments__button:hover {
+    background-color: #C9F0FF;
+    color: #0EB1D2; }
+  .comments__button--open {
+    right: 1170px; }
+
+.comments__area {
+  overflow-y: scroll;
+  position: fixed;
+  bottom: 0;
+  right: 0;
+  height: 95vh;
+  width: 480px;
+  transition-duration: 0.1s;
+  transition-property: right;
+  transition-timing-function: ease-out;
+  box-shadow: -5px 0 10px rgba(0, 0, 0, 0.2);
+  padding: 10px; }
+  .comments__area--open {
+    right: 690px;
+    background-color: #fafafa; }
+
+.comments__card {
+  margin-bottom: 10px; }
+
+.comment__header {
+  margin-bottom: 10px; }
+
+.comment__authorName {
+  font-size: 0.7rem;
+  color: #666666;
+  margin-right: 5px; }
+
+.comment__date {
+  font-size: 0.6rem;
+  color: #cccccc; }
+
+.comment__body {
+  font-size: 0.7rem; }

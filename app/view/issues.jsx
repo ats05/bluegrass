@@ -36,9 +36,12 @@ export default class Issues extends React.Component {
         this.setState({
             issues: issues,
         });
+
+        this.api.issue(issue.id).then( (response) => {
+            this.setState({singleIssue: response});
+            console.log("update");
+        });
         this.setState({singleIssue: issue});
-        console.log(this.state.singleIssue);
-        console.log(issue);
     }
     // 更新確認
     updateIssues() {
@@ -49,7 +52,6 @@ export default class Issues extends React.Component {
             updates.forEach( (issue) => {
                 issueList.push(this.createCassette(issue));
             });
-
             this.setState({
                 issues: updates,
                 issueList: issueList
@@ -76,9 +78,8 @@ export default class Issues extends React.Component {
             <div>
                 <List>
                     {this.state.issueList}
-                {/*<div className="issues_area"></div>*/}
                 </List>
-                <SingleIssue content={this.state.singleIssue}/>
+                <SingleIssue api={this.api} issue={this.state.singleIssue}/>
             </div>
         );
     }
@@ -112,7 +113,6 @@ export default class Issues extends React.Component {
                     <span>{issue.assigneeName}</span>
                 </span>
             </span>;
-
         return (
             <div className={statusClass}>
                 <ListItem
