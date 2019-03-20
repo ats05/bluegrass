@@ -26,7 +26,7 @@ export default class BacklogApi extends Api{
         console.log(issue);
         return {
             id: issue.id,
-            title: issue.summary,
+            title: issue.issueKey + ' ' + issue.summary,
             createDate: issue.created,
             startDate: issue.startDate,
             updateDate: issue.updated,
@@ -40,22 +40,25 @@ export default class BacklogApi extends Api{
             assigneeName: issue.assignee.name,
             projectColorId: issue.projectId % self.PROJECT_COLOR_MAX,
             parentId: issue.parentIssueId ? issue.parentIssueId : '',
-            comments: this._parseComments(issue.comments),
+            comments: [],
             updatedFlag: false,
             dogEarFlag: false
         }
     }
     _parseComments(comments) {
+        console.log(comments);
         let results = [];
         if (!comments) return [];
-        json.data.forEach( (comment) => {
-            console.log(comment);
-            results[comment.id] = {
+        comments.forEach( (comment) => {
+            // console.log(comment);
+            results.push({
                 createDate: comment.created,
                 body: comment.content,
-                authorName: comment.createdUser.name
-            }
+                authorName: comment.createdUser.name,
+                updateDate: comment.updated
+            });
         });
+        return results;
     }
 
     issues(project_id = null, status_id = null, assigned_to_id = "me", sort = "updated") {
@@ -77,10 +80,23 @@ export default class BacklogApi extends Api{
         let params = {
         };
         let payload = Object.assign(this.params, params);
+        let issue;
 
-         return new Promise( (resolve, reject) => {
+        return new Promise( (resolve, reject) => {
             axios.get(this.getUrl(path.issue).replace(':issueIdOrKey', issueId), {params: payload})
-                .then(response => resolve(this._parseIssue(response.data)))
+                .then(response => {
+                    return new Promise(resolve => {
+                        issue = this._parseIssue(response.data);
+                        resolve(issue);
+                    });
+                })
+                .then(response => {
+                    return new Promise(resolve => { resolve(this.comments(issueId)); })
+                })
+                .then(response => {
+                    issue.comments = response;
+                    resolve(issue);
+                })
                 .catch(error => reject(error))
             ;
         });
@@ -90,13 +106,13 @@ export default class BacklogApi extends Api{
 
     comments(issueId, count = 20, order = 'asc') {
         let params = {
-            count: 20,
+            count: count,
             order: order
         };
         let payload = Object.assign(this.params, params);
         return new Promise( (resolve, reject) => {
             axios.get(this.getUrl(path.comments).replace(':issueIdOrKey', issueId), {params: payload})
-                .then(response => resolve(this.parseIssues(response)))
+                .then(response => { return new Promise (resolve(this._parseComments(response.data)));})
                 .catch(error => reject(error))
             ;
         });
