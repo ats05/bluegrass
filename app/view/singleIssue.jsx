@@ -27,10 +27,14 @@ export default class SingleIssue extends React.Component {
         this.state = {};
     }
 
-    shouldComponentUpdate(nextProps, nextState) {
+    shouldComponentUpdate(nextProps, nextState, nextContext) {
         if (this.props.api === null) return false;
         if (this.props.issue === null) return false;
         return true;
+    }
+
+    componentWillReceiveProps(nextProps, nextContext) {
+
     }
 
     render() {

@@ -68,7 +68,7 @@ svg {
     width: 30px;
     flex: 1;
     color: #666666;
-    background-color: #cccccc; }
+    background-color: #b0b0b0; }
     .spaces__tabItem {
       display: inline-block;
       margin: 0 auto; }
@@ -99,93 +99,89 @@ svg {
   .issues__item:hover {
     background-color: #C9F0FF; }
 
-.issueItems {
-  /*
-  title: issue.subject,
-  createDate: issue.created_on,
-  startDate: issue.start_date,
-  updateDate: issue.updated_on,
-  endDate: issue.due_date,
-  authorName: issue.author.name,
-  projectName: issue.project.name,
-  description: issue.description,
-  statusName: issue.status.name,
-  statusId: issue.status.id,
-  priorityId: issue.priority.id,
-  assigneeName: issue.assigned_to.name,
-  projectColorId: issu
-  */ }
-  .issueItems__fav {
-    width: 50px;
-    min-width: 50px;
-    text-align: center;
-    font-size: 1.5rem;
-    padding-bottom: 4px; }
-    .issueItems__fav--none {
-      color: #ffffff; }
-  .issueItems__content {
-    position: relative; }
-    .issueItems__content--updated {
-      background-color: #FFFBD5; }
-    .issueItems__content--dogEar::after {
-      background-color: #fff;
-      position: absolute;
-      top: 0;
-      left: 0;
-      content: "";
-      border-style: solid;
-      border-width: 0 0 15px 15px;
-      border-color: transparent transparent #cccccc transparent;
-      z-index: 100; }
-  .issueItems__header {
-    display: block;
-    line-height: 1;
-    margin-bottom: 3px;
-    overflow-x: hidden;
-    margin-left: 30px; }
-  .issueItems__id {
-    color: #cccccc;
-    min-width: 80px;
-    font-size: 0.7rem;
-    display: inline-block;
-    vertical-align: bottom; }
-  .issueItems__projectName {
-    font-size: 0.7rem;
-    display: inline-block;
-    width: 120px;
-    overflow: hidden;
-    white-space: nowrap;
-    text-overflow: ellipsis;
-    vertical-align: bottom; }
-  .issueItems__title {
-    font-size: 0.8rem;
-    overflow: hidden;
-    white-space: nowrap;
-    text-overflow: ellipsis;
-    display: block;
-    transition: font-weight 200ms linear; }
-    .issues__item:hover .issueItems__title {
-      font-weight: bolder; }
-  .issueItems__assigneeName {
-    font-size: 0.8rem;
-    color: #666666; }
-  .issueItems__assigneeIcon {
-    padding-right: 8px; }
-  .issueItems__footer {
-    margin: 5px 0 5px 15px; }
-  .issueItems__limit {
-    color: #666666;
-    font-size: 0.7rem;
-    width: 170px;
-    display: inline-block; }
-    .issueItems__limit__caret {
-      padding: 0 8px 0 10px; }
-    .issueItems__limit--inProgress {
-      color: #0EB1D2; }
-    .issueItems__limit--expired {
-      color: #ff0000; }
-  .issueItems__limitIcon {
-    padding-right: 8px; }
+.issueItems__watcher {
+  color: transparent;
+  position: absolute;
+  top: 0;
+  left: 0;
+  color: #b0b0b0; }
+  .issueItems__watcher--watch {
+    color: #0EB1D2; }
+
+.issueItems__content {
+  position: relative; }
+  .issueItems__content--updated {
+    background-color: #FFFBD5; }
+  .issueItems__content--dogEar::after {
+    background-color: #fff;
+    position: absolute;
+    top: 0;
+    left: 0;
+    content: "";
+    border-style: solid;
+    border-width: 0 0 15px 15px;
+    border-color: transparent transparent #cccccc transparent;
+    z-index: 100; }
+
+.issueItems__header {
+  display: block;
+  line-height: 1;
+  margin-bottom: 3px;
+  overflow-x: hidden;
+  margin-left: 30px;
+  padding-left: 40px; }
+
+.issueItems__id {
+  color: #b0b0b0;
+  min-width: 80px;
+  font-size: 0.7rem;
+  display: inline-block;
+  vertical-align: bottom; }
+
+.issueItems__projectName {
+  font-size: 0.7rem;
+  display: inline-block;
+  width: 120px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  vertical-align: bottom; }
+
+.issueItems__title {
+  font-size: 0.8rem;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  display: block;
+  transition: font-weight 200ms linear;
+  padding-left: 40px; }
+  .issues__item:hover .issueItems__title {
+    font-weight: bolder; }
+
+.issueItems__assigneeName {
+  font-size: 0.8rem;
+  color: #666666; }
+
+.issueItems__assigneeIcon {
+  padding-right: 8px; }
+
+.issueItems__footer {
+  margin: 5px 0 5px 15px; }
+
+.issueItems__limit {
+  color: #666666;
+  font-size: 0.7rem;
+  width: 170px;
+  display: inline-block; }
+  .issueItems__limit__caret {
+    padding: 0 8px 0 10px; }
+  .issueItems__limit--inProgress {
+    color: #0EB1D2; }
+  .issueItems__limit--expired {
+    color: #ff0000; }
+
+.issueItems__limitIcon {
+  padding-right: 8px; }
 
 .singleIssue__area {
   overflow-y: scroll;
@@ -256,7 +252,7 @@ svg {
     padding-right: 8px; }
   .singleIssue__statusList__title {
     width: 150px;
-    color: #cccccc; }
+    color: #b0b0b0; }
   .singleIssue__statusList__body {
     color: #666666; }
   .singleIssue__statusList__limit {
@@ -318,7 +314,7 @@ svg {
 
 .comment__date {
   font-size: 0.6rem;
-  color: #cccccc; }
+  color: #b0b0b0; }
 
 .comment__body {
   font-size: 0.7rem; }

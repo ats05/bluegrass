@@ -4,13 +4,12 @@ import BacklogApi from "../script/backlogApi";
 import Moment from 'moment';
 import classnames from 'classnames';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import {faStopwatch, faUser, faStar as fasStar, faCaretRight } from '@fortawesome/free-solid-svg-icons'
+import {faStopwatch, faUser, faStar as fasStar, faCaretRight, faUserEdit} from '@fortawesome/free-solid-svg-icons'
 import { faStar as farStar } from '@fortawesome/free-regular-svg-icons';
 import SingleIssue from "./singleIssue";
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
-import Icon from '@material-ui/core/Icon';
 import Avatar from '@material-ui/core/Avatar';
 
 
@@ -43,6 +42,18 @@ export default class Issues extends React.Component {
         });
         this.setState({singleIssue: issue});
     }
+    toggleWatch(e, issue) {
+        console.log("watch " + issue.id);
+        e.preventDefault();
+        let issues = this.state.issues;
+        issues[issue.id].watcher = !issues[issue.id].watcher;
+        this.setState({
+            issues: issues,
+        });
+
+        e.stopPropagation();
+    }
+
     // 更新確認
     updateIssues() {
         this.api.updateIssues().then( (response) => {
@@ -117,15 +128,19 @@ export default class Issues extends React.Component {
             <div className={statusClass}>
                 <ListItem
                     button
-                    onClick={e => this.openIssue(e, issue)}
-                >
-                    {/*<Avatar>*/}
-                    <Icon>star</Icon>
+                    onClick={e => this.openIssue(e, issue)}>
                     {/*</Avatar>*/}
                     <ListItemText
                         primary={primaryText}
                         secondary={secondaryText}/>
                 </ListItem>
+                {/*<span className="issueItems__dogEarButton"></span>*/}
+                <div
+                    className={classnames("issueItems__watcher", {"issueItems__watcher--watch": issue.watcherFlag})}
+                    onClick={e => this.toggleWatch(e, issue)}>
+                    <FontAwesomeIcon icon={fasStar}/>
+                </div>
+
             </div>
         );
     }

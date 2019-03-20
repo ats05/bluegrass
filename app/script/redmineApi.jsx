@@ -86,8 +86,10 @@ export default class RedmineApi extends Api{
             assigneeName: issue.assigned_to.name,
             projectColorId: issue.project.id % self.PROJECT_COLOR_MAX,
             parentId: issue.parent ? issue.parent.id : '',
+            parentIds: [],  // 階層化された親チケットのIDを並べる
             comments: this._parseComments(issue.journals),
             updatedFlag: false,
+            watcherFlag: false,
             dogEarFlag: false
         };
     }

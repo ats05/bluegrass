@@ -19,14 +19,20 @@
 }
 
 .issueItems {
-  &__fav {
-    width: 50px;
-    min-width: 50px;
-    text-align: center;
-    font-size: 1.5rem;
-    padding-bottom: 4px;
-    &--none {
-      color: $color-white;
+  &__watcher {
+    color: transparent;
+    position: absolute;
+    top:0;
+    left: 0;
+    color: $color-veryLightGray;
+    height: 100%;
+    width: 60px;
+    vertical-align: middle;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    &--watch {
+      color: $mainColor-accent;
     }
   }
   &__content {
@@ -54,23 +60,8 @@
     margin-bottom: 3px;
     overflow-x: hidden;
     margin-left: 30px;
+    padding-left: 40px;
   }
-
-  /*
-  title: issue.subject,
-  createDate: issue.created_on,
-  startDate: issue.start_date,
-  updateDate: issue.updated_on,
-  endDate: issue.due_date,
-  authorName: issue.author.name,
-  projectName: issue.project.name,
-  description: issue.description,
-  statusName: issue.status.name,
-  statusId: issue.status.id,
-  priorityId: issue.priority.id,
-  assigneeName: issue.assigned_to.name,
-  projectColorId: issu
-  */
   &__id {
     color: $color-lightGray;
     min-width: 80px;
@@ -94,6 +85,7 @@
     text-overflow: ellipsis;
     display: block;
     transition: font-weight 200ms linear;
+    padding-left: 40px;
     .issues__item:hover &{
       font-weight: bolder;
     }
