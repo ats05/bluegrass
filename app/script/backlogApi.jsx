@@ -53,7 +53,7 @@ export default class BacklogApi extends Api{
             // console.log(comment);
             results.push({
                 createDate: comment.created,
-                body: comment.content,
+                body: comment.content ? comment.content : '',
                 authorName: comment.createdUser.name,
                 updateDate: comment.updated
             });
