@@ -68,7 +68,7 @@ svg {
     width: 30px;
     flex: 1;
     color: #666666;
-    background-color: #cccccc; }
+    background-color: #b0b0b0; }
     .spaces__tabItem {
       display: inline-block;
       margin: 0 auto; }
@@ -144,7 +144,7 @@ svg {
     overflow-x: hidden;
     margin-left: 30px; }
   .issueItems__id {
-    color: #cccccc;
+    color: #b0b0b0;
     min-width: 80px;
     font-size: 0.7rem;
     display: inline-block;
@@ -256,7 +256,7 @@ svg {
     padding-right: 8px; }
   .singleIssue__statusList__title {
     width: 150px;
-    color: #cccccc; }
+    color: #b0b0b0; }
   .singleIssue__statusList__body {
     color: #666666; }
   .singleIssue__statusList__limit {
@@ -318,7 +318,18 @@ svg {
 
 .comment__date {
   font-size: 0.6rem;
-  color: #cccccc; }
+  color: #b0b0b0; }
 
 .comment__body {
   font-size: 0.7rem; }
+
+.actionButtons__area {
+  position: fixed;
+  bottom: 0;
+  right: 0; }
+
+.actionButtons__list {
+  padding: 40px; }
+
+.actionButtons__item {
+  margin-top: 20px; }
