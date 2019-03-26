@@ -28,16 +28,16 @@ export default class BacklogApi extends Api{
             id: issue.id,
             title: issue.issueKey + ' ' + issue.summary,
             createDate: issue.created,
-            startDate: issue.startDate,
+            startDate: issue.startDate ? issue.startDate : '',
             updateDate: issue.updated,
-            endDate: issue.dueDate,
+            endDate: issue.dueDate ? issue.dueDate : '',
             authorName: issue.createdUser.name,
             projectName: issue.projectId,   //TODO nameを取れるようにする
             description: issue.description,
             statusName: issue.status.name,
             statusId: issue.status.id,
             priorityId: issue.priority.id,
-            assigneeName: issue.assignee.name,
+            assigneeName: issue.assignee.name ? issue.assignee.name : '',
             projectColorId: issue.projectId % self.PROJECT_COLOR_MAX,
             parentId: issue.parentIssueId ? issue.parentIssueId : '',
             comments: [],
@@ -116,5 +116,9 @@ export default class BacklogApi extends Api{
                 .catch(error => reject(error))
             ;
         });
+    }
+
+    getIssueUrl(issueId) {
+        return "";
     }
 }

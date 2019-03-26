@@ -108,4 +108,8 @@ export default class RedmineApi extends Api{
     _parseCommentDetail(detail) {
 
     }
+
+    getIssueUrl(issueId) {
+        return this.url + path.issue + "/" + issueId;
+    }
 }

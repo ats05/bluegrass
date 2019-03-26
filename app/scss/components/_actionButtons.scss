@@ -1,0 +1,14 @@
+
+.actionButtons {
+  &__area {
+    position: fixed;
+    bottom: 0;
+    right: 0;
+  }
+  &__list {
+    padding: 40px;
+  }
+  &__item {
+    margin-top: 30px;
+  }
+}

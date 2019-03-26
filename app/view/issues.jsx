@@ -43,6 +43,10 @@ export default class Issues extends React.Component {
         });
         this.setState({singleIssue: issue});
     }
+    closeIssue(){
+        console.log(this);
+        this.setState({singleIssue: ""});
+    }
     // 更新確認
     updateIssues() {
         this.api.updateIssues().then( (response) => {
@@ -79,7 +83,7 @@ export default class Issues extends React.Component {
                 <List>
                     {this.state.issueList}
                 </List>
-                <SingleIssue api={this.api} issue={this.state.singleIssue}/>
+                <SingleIssue api={this.api} issue={this.state.singleIssue} closeIssue={() => this.closeIssue()}/>
             </div>
         );
     }

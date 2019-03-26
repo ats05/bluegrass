@@ -1,6 +1,5 @@
 import React from 'react';
 import textile from 'textile-js';
-import RedmineApi from "../script/redmineApi";
 import Moment from 'moment';
 import classnames from 'classnames';
 
@@ -14,12 +13,9 @@ import {
     faEdit,
     faSyncAlt
 } from '@fortawesome/free-solid-svg-icons'
-import FlatButton from 'material-ui/FlatButton';
-import {fullWhite} from 'material-ui/styles/colors';
-import Icon from '@material-ui/core/Icon';
-import AppBar from '@material-ui/core/AppBar';
-import Toolbar from '@material-ui/core/Toolbar';
 import Comments from "./comments";
+import ActionButtons from "./actionButtons";
+
 
 export default class SingleIssue extends React.Component {
     constructor(props) {
@@ -31,6 +27,10 @@ export default class SingleIssue extends React.Component {
         if (this.props.api === null) return false;
         if (this.props.issue === null) return false;
         return true;
+    }
+
+    closeIssue() {
+        this.props.closeIssue();
     }
 
     render() {
@@ -108,6 +108,7 @@ export default class SingleIssue extends React.Component {
                         </div>
                     </div>
                 </div>
+                <ActionButtons api={this.props.api} issue={this.props.issue} closeIssue={() => this.props.closeIssue()}/>
             </div>
         );
     }
