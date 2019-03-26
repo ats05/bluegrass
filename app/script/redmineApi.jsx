@@ -4,8 +4,8 @@ import Moment from 'moment';
 import Api from './api'
 
 let path = {
-    issues: "issues.json",
-    issue: "issues"
+    issues: "/issues.json",
+    issue: "/issues"
 };
 
 const ISSUE_PARAMS = {
