@@ -7,11 +7,16 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {faCopy, faChevronRight} from '@fortawesome/free-solid-svg-icons'
 import Fab from '@material-ui/core/Fab';
 import {CopyToClipboard} from 'react-copy-to-clipboard';
+import Tooltip from '@material-ui/core/Tooltip';
+
+const copyLebel = "Copy URL";
+const copiedLebel = "Copied!";
 
 export default class ActionButtons extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
+            copyTooltip: copyLebel
         };
     }
     shouldComponentUpdate(nextProps, nextState, nextContext) {
@@ -27,16 +32,26 @@ export default class ActionButtons extends React.Component {
         this.props.closeIssue(e);
     }
 
+    // うまくいかね
+    copied() {
+        this.state = {
+            copyTooltip: copiedLebel
+        };
+        // setTimeout(() => { this.setState({copyTooltip: copyLebel}) }, 2000);
+    }
+
     render() {
         return (
             <div className="actionButtons__area">
                 <div className="actionButtons__list">
                     <div className="actionButtons__item">
-                        <CopyToClipboard text={this.props.api.getIssueUrl(this.props.issue.id)} onCopy={() => this.setState({copied: true})}>
-                            <Fab size="small" aria-label="Copy to clipboard">
-                                <FontAwesomeIcon icon={faCopy} className="actionButtons__copy"/>
-                            </Fab>
-                        </CopyToClipboard>
+                        <Tooltip disableFocusListener disableTouchListener placement="left" title={this.state.copyTooltip} >
+                            <CopyToClipboard text={this.props.api.getIssueUrl(this.props.issue)} onClick={this.copied()}>
+                                <Fab size="small" aria-label="Copy">
+                                    <FontAwesomeIcon icon={faCopy} className="actionButtons__copy"/>
+                                </Fab>
+                            </CopyToClipboard>
+                        </Tooltip>
                     </div>
                     <div className="actionButtons__item">
                         <Fab size="small" aria-label="close" onClick={e => this.closeIssue(e)}>

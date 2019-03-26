@@ -109,7 +109,7 @@ export default class RedmineApi extends Api{
 
     }
 
-    getIssueUrl(issueId) {
-        return this.url + path.issue + "/" + issueId;
+    getIssueUrl(issue) {
+        return this.url + path.issue + "/" + issue.id;
     }
 }
