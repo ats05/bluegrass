@@ -108,7 +108,7 @@ export default class SingleIssue extends React.Component {
                         </div>
                     </div>
                 </div>
-                <ActionButtons api={this.props.api} issue={this.props.issue} closeIssue={this.props.closeIssue}/>
+                <ActionButtons api={this.props.api} issue={this.props.issue} closeIssue={() => this.props.closeIssue()}/>
             </div>
         );
     }

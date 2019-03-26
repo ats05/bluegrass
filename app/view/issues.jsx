@@ -83,7 +83,7 @@ export default class Issues extends React.Component {
                 <List>
                     {this.state.issueList}
                 </List>
-                <SingleIssue api={this.api} issue={this.state.singleIssue} closeIssue={this.closeIssue}/>
+                <SingleIssue api={this.api} issue={this.state.singleIssue} closeIssue={() => this.closeIssue()}/>
             </div>
         );
     }
