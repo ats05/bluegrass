@@ -17,7 +17,8 @@ export default class Api {
         return this.url + path
     }
     compareUpdates(currentIssues, updates){
-        updates.forEach( (update) => {
+        Object.keys(updates).forEach( (updateId) => {
+            let update = updates[updateId];
             if(currentIssues[update.id]) {
                 let old = currentIssues[update.id];
                 if(Moment(update.updateDate) > Moment(old.updateDate)) {

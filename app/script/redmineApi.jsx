@@ -20,7 +20,7 @@ export default class RedmineApi extends Api{
         });
     }
     parseIssues(json){
-        let results = [];
+        let results = {};
         json.data.issues.forEach( (issue) => {
             results[issue.id] = this._parseIssue(issue);
         });

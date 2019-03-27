@@ -53,8 +53,8 @@ export default class Issues extends React.Component {
             let updates = this.api.compareUpdates(this.state.issues, response);
 
             let issueList = [];
-            updates.forEach( (issue) => {
-                issueList.push(this.createCassette(issue));
+            Object.keys(updates).forEach( (issueId) => {
+                issueList.push(this.createCassette(updates[issueId]));
             });
             this.setState({
                 issues: updates,
@@ -67,8 +67,8 @@ export default class Issues extends React.Component {
         this.api.issues().then( (response) => {
             let issues = response;
             let issueList = [];
-            issues.forEach( (issue) => {
-                issueList.push(this.createCassette(issue));
+            Object.keys(issues).forEach( (issueId) => {
+                issueList.push(this.createCassette(issues[issueId]));
             });
             this.setState({
                 issues: issues,
