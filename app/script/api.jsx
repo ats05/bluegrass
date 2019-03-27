@@ -5,6 +5,8 @@ import Moment from 'moment';
 const PROJECT_COLOR_MAX = 12;
 
 let path = {};
+let userId = '';
+let assignedProjects = [];
 
 export default class Api {
     constructor(url, params) {
