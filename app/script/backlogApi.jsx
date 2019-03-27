@@ -26,6 +26,7 @@ export default class BacklogApi extends Api{
         console.log(issue);
         return {
             id: issue.id,
+            issueKey: issue.issueKey,
             title: issue.issueKey + ' ' + issue.summary,
             createDate: issue.created,
             startDate: issue.startDate ? issue.startDate : '',
@@ -118,7 +119,7 @@ export default class BacklogApi extends Api{
         });
     }
 
-    getIssueUrl(issueId) {
-        return "";
+    getIssueUrl(issue) {
+        return this.url +  "/view/" + issue.issueKey;
     }
 }
