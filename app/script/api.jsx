@@ -49,13 +49,12 @@ export default class Api {
         // updatesの中になかったものはクローズフラグを立てる
         // 一次対応；保存済みチケットの中で完了してたものは一覧から削除
         // TODO 完了なのか、担当変更なのか確認できるようにする
-        Object.keys(currentIssues).forEach((issueId) => {
-            if(!updatedIds.includes(issueId)) {
-                console.log(currentIssues[issueId]);
-                if(currentIssues[issueId].storedItemFlag) delete currentIssues[issueId];
-                else currentIssues[issueId].closedFlag = true;
-            }
-        });
+        // Object.keys(currentIssues).forEach((issueId) => {
+        //     if(!updatedIds.includes(issueId)) {
+        //         if(currentIssues[issueId].storedItemFlag) delete currentIssues[issueId];
+        //         else currentIssues[issueId].closedFlag = true;
+        //     }
+        // });
 
         return currentIssues;
     }
