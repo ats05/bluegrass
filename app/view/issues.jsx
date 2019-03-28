@@ -12,8 +12,10 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 import Icon from '@material-ui/core/Icon';
 import Avatar from '@material-ui/core/Avatar';
+import Store from 'electron-config';
 
 
+let store;
 
 export default class Issues extends React.Component {
     constructor(props) {
@@ -24,10 +26,11 @@ export default class Issues extends React.Component {
             issueList: '',
             singleIssue: ''
         };
+        store = new Store();
         let params = props.params;
         this.api = new RedmineApi(params);
         this.getIssues();
-        setInterval(() => { this.updateIssues();}, 10000);
+        setInterval(() => { this.updateIssues();}, 60000);
     }
     openIssue(e, issue){
         e.preventDefault();
@@ -60,21 +63,49 @@ export default class Issues extends React.Component {
                 issues: updates,
                 issueList: issueList
             });
+            this.storeData();
         }, (e) => {console.log(e)});
     }
     // 0からのデータ取得
     getIssues(){
         this.api.issues().then( (response) => {
             let issues = response;
-            let issueList = [];
-            Object.keys(issues).forEach( (issueId) => {
-                issueList.push(this.createCassette(issues[issueId]));
-            });
             this.setState({
                 issues: issues,
-                issueList: issueList
             });
+            this.restoreData()
         }, (e) => {console.log(e)});
+    }
+    // 保存してあるチケットをチェック
+    restoreData(){
+        let storedData = store.get('issueData' + this.props.spaceId);
+        let issues = {};
+        if (Object.keys(storedData).length > 0) {
+            issues = this.api.compareUpdates(storedData, this.state.issues);
+        } else {
+            issues = this.state.issues;
+        }
+        let issueList = [];
+        Object.keys(issues).forEach( (issueId) => {
+            issueList.push(this.createCassette(issues[issueId]));
+        });
+        this.setState({
+            issues: issues,
+            issueList: issueList
+        });
+    }
+    storeData() {
+        let issues = this.state.issues;
+        let storeData = {};
+        Object.keys(issues).forEach( (issueId) => {
+            storeData[issueId] = {
+                updateDate: issues[issueId].updateDate,
+                updatedFlag: issues[issueId].updatedFlag,
+                dogEarFlag: issues[issueId].dogEarFlag,
+                storedItemFlag: true
+            }
+        });
+        store.set('issueData' + this.props.spaceId, storeData);
 
     }
     render() {

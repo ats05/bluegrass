@@ -21,9 +21,13 @@ export default class Api {
             let update = updates[updateId];
             if(currentIssues[update.id]) {
                 let old = currentIssues[update.id];
+                update.updatedFlag = old.updatedFlag;
+                update.dogEarFlag = old.dogEarFlag;
                 if(Moment(update.updateDate) > Moment(old.updateDate)) {
-                    console.log("updated");
                     update.updatedFlag = true;
+                    currentIssues[update.id] = update;
+                }
+                else if(old.storedItemFlag) {
                     currentIssues[update.id] = update;
                 }
             }
