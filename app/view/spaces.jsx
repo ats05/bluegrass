@@ -48,7 +48,7 @@ export default class Spaces extends React.Component {
                     </div>
                 </div>
                 <div className="spaces__issueArea">
-                    <Issues params={this.state.spaces[0]}/>
+                    <Issues params={this.state.spaces[0]} spaceId="0"/>
                 </div>
             </div>
         );

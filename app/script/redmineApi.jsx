@@ -20,7 +20,7 @@ export default class RedmineApi extends Api{
         });
     }
     parseIssues(json){
-        let results = [];
+        let results = {};
         json.data.issues.forEach( (issue) => {
             results[issue.id] = this._parseIssue(issue);
         });
@@ -89,8 +89,8 @@ export default class RedmineApi extends Api{
             parentIds: [],  // 階層化された親チケットのIDを並べる
             comments: this._parseComments(issue.journals),
             updatedFlag: false,
-            watcherFlag: false,
-            dogEarFlag: false
+            dogEarFlag: false,
+            closedFlag: false
         };
     }
     _parseComments(journals) {
@@ -109,5 +109,9 @@ export default class RedmineApi extends Api{
     }
     _parseCommentDetail(detail) {
 
+    }
+
+    getIssueUrl(issue) {
+        return this.url + path.issue + "/" + issue.id;
     }
 }

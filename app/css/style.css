@@ -104,7 +104,13 @@ svg {
   position: absolute;
   top: 0;
   left: 0;
-  color: #b0b0b0; }
+  color: #fafafa;
+  height: 100%;
+  width: 60px;
+  vertical-align: middle;
+  display: flex;
+  align-items: center;
+  justify-content: center; }
   .issueItems__watcher--watch {
     color: #0EB1D2; }
 
@@ -122,6 +128,9 @@ svg {
     border-width: 0 0 15px 15px;
     border-color: transparent transparent #cccccc transparent;
     z-index: 100; }
+  .issueItems__content--closed {
+    background-color: #b0b0b0;
+    color: #666666; }
 
 .issueItems__header {
   display: block;
@@ -318,3 +327,14 @@ svg {
 
 .comment__body {
   font-size: 0.7rem; }
+
+.actionButtons__area {
+  position: fixed;
+  bottom: 0;
+  right: 0; }
+
+.actionButtons__list {
+  padding: 40px; }
+
+.actionButtons__item {
+  margin-top: 30px; }
