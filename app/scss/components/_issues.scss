@@ -45,6 +45,10 @@
       border-color: transparent transparent #cccccc transparent;
       z-index: 100;
     }
+    &--closed {
+      background-color: $color-lightGray;
+      color: $color-darkGray;
+    }
   }
 
 

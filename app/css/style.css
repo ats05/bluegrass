@@ -137,6 +137,9 @@ svg {
       border-width: 0 0 15px 15px;
       border-color: transparent transparent #cccccc transparent;
       z-index: 100; }
+    .issueItems__content--closed {
+      background-color: #f8f8f8;
+      color: #666666; }
   .issueItems__header {
     display: block;
     line-height: 1;
@@ -332,4 +335,4 @@ svg {
   padding: 40px; }
 
 .actionButtons__item {
-  margin-top: 20px; }
+  margin-top: 30px; }

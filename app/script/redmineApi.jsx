@@ -88,7 +88,8 @@ export default class RedmineApi extends Api{
             parentId: issue.parent ? issue.parent.id : '',
             comments: this._parseComments(issue.journals),
             updatedFlag: false,
-            dogEarFlag: false
+            dogEarFlag: false,
+            closedFlag: false
         };
     }
     _parseComments(journals) {

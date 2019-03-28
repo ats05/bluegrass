@@ -102,6 +102,7 @@ export default class Issues extends React.Component {
                 updateDate: issues[issueId].updateDate,
                 updatedFlag: issues[issueId].updatedFlag,
                 dogEarFlag: issues[issueId].dogEarFlag,
+                closedFlag: issues[issueId].closedFlag,
                 storedItemFlag: true
             }
         });
@@ -132,7 +133,12 @@ export default class Issues extends React.Component {
         let startDate = Moment(issue.startDate).format("YYYY-MM-DD");
         let endDate = Moment(issue.endDate).format("YYYY-MM-DD");
 
-        let statusClass = classnames("issueItems__content", {"issueItems__content--dogEar": issue.dogEarFlag}, {"issueItems__content--updated": issue.updatedFlag})
+        let statusClass = classnames(
+            "issueItems__content",
+            {"issueItems__content--dogEar": issue.dogEarFlag},
+            {"issueItems__content--updated": issue.updatedFlag},
+            {"issueItems__content--closed": issue.closedFlag},
+        );
 
         let primaryText =
             <span className="issueItems__title">{issue.title}</span>;
