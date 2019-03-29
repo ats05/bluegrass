@@ -10,38 +10,48 @@ import Issues from "./issues";
 import Store from 'electron-config';
 import NewSpaces from "./newSpace";
 
+let store;
 
+
+/*
+Spaces やりたきこと
+Space = ワークスペース　BacklogとかRedmineの1アカウントで利用できる範囲
+
+マウント時
+- 設定ファイルを読んで、保存されてるSpaceの情報を取得
+- ひとつもなかった場合、初期設定画面を開く
+
+ */
 export default class Spaces extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
             spaces: [],
-            selectedIndex: 0,
-            noConfig: true
+            spacesLength: 0,
+            noConfig: true,
         };
-
-        const store = new Store();
-        let config = store.get('spaces');
-        if (!config) {
-            this.state.noConfig = true;
-            // store.set('spaces', config);
-        }
-        else {
-            this.state.spaces = config;
-            this.state.noConfig = false;
-        }
-        
-
     }
 
     // NewSpacesで入力したスペース設定を取り込む
-    setConfig(config) {
-        this.state.noConfig = false;
+    loadConfig() {
+        store = new Store();
+        let config = store.get('spaces');
+        // if (!config) {
+            this.state.noConfig = true;
+            this.state.spacesLength = 0;
+        // }
+        // else {
+        //     this.state.spaces = config;
+        //     this.state.spacesLength = config.length;
+        //     this.state.noConfig = false;
+        // }
     }
 
     render() {
 
-        if(this.state.noConfig) return <NewSpaces complete={this.setConfig}/>
+        // TODO もっと適切なやり方があろうに。
+        // TODO Spaceの追加機能
+        if(this.state.noConfig) return <NewSpaces complete={this.loadConfig} spaceId={this.state.spacesLength}/>;
 
         return (
             <div className="spaces">

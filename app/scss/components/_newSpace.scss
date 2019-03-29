@@ -15,7 +15,17 @@
     flex-direction: column;
     width: 61vw;
     height: 100%;
-    align-items: center;
     margin: 0 auto;
+    justify-content: center;
+  }
+  &__box {
+    height: 48px;
+    margin: 16px 0 8px;
+  }
+  &__auth {
+    visibility: hidden;
+    &--show {
+      visibility: visible;
+    }
   }
 }
