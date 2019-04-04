@@ -10,9 +10,9 @@ import BacklogApi from "../script/backlogApi";
 
 
 const STATUS_NONE = 0;
-const STATUS_LOADING = 1;
-const STATUS_SUCCESS = 0;
-const STATUS_ERROR = 0;
+const STATUS_LOADING = 10;
+const STATUS_SUCCESS = 20;
+const STATUS_ERROR = 30;
 const TYPE_REDMINE = "redmine";
 const TYPE_BACKLOG = "backlog";
 
@@ -61,6 +61,9 @@ export default class NewSpaces extends React.Component {
             case TYPE_BACKLOG:
                 api = new BacklogApi(params);
                 break;
+            default:
+                this.setState({status: STATUS_NONE});
+                return;
         }
 
         api.checkApi()

@@ -114,19 +114,23 @@ svg {
 
 .checkButton__wrap {
   height: 80px;
-  text-align: center; }
+  text-align: center;
+  position: relative;
+  margin-top: 40px; }
 
 .checkButton__button {
-  margin: -57px auto 0; }
+  margin: 0 auto;
+  z-index: 100; }
 
 .checkButton__loader, .checkButton__loader:after {
   border-radius: 50%;
   width: 80px;
   height: 80px;
-  margin-top: -55px; }
+  position: absolute; }
 
 .checkButton__loader {
-  margin: 0 auto;
+  z-index: 0;
+  margin: -57px auto 0;
   font-size: 10px;
   position: relative;
   text-indent: -9999em;
