@@ -3,22 +3,49 @@ import axios from 'axios';
 import Moment from 'moment';
 import Api from './api'
 
-let path = {
+export const path = {
     issues: "issues.json",
-    issue: "issues"
+    issue: "issues",
+    myself: "/users/current.json"
 };
 
 const ISSUE_PARAMS = {
 
 };
+let userName;
+let userId
+
 
 export default class RedmineApi extends Api{
+    static path() {
+        return path
+    }
     constructor(params) {
         super(params.url, {
             key: params.key,
             auth: params.auth
         });
     }
+    checkApi() {
+        return new Promise( (resolve, reject) => {
+            axios.get(this.getUrl(path.myself), {params: this.params, timeout: 5000})
+                .then(response => {
+                    console.log(response);
+                    resolve(this._parseUserData(response.data.user));
+                })
+                .catch(error => reject(error))
+            ;
+        });
+    }
+    _parseUserData(json){
+        return {
+            userName: json.firstname + json.lastname,
+            userId: json.login,
+            id: json.id,
+            // mail: json.mail
+        }
+    }
+
     parseIssues(json){
         let results = {};
         json.data.issues.forEach( (issue) => {

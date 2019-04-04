@@ -29,3 +29,47 @@
     }
   }
 }
+
+.checkButton {
+  &__wrap {
+    height: 80px;
+    text-align: center;
+    position: relative;
+  }
+  &__button {
+    margin: 0 auto;
+  }
+}
+
+
+
+.checkButton__loader, .checkButton__loader:after {
+  border-radius: 50%;
+  width: 80px;
+  height: 80px;
+  position: absolute;
+}
+.checkButton__loader {
+  margin: 0 auto;
+  font-size: 10px;
+  position: relative;
+  text-indent: -9999em;
+  border-top: 1px solid rgba(255, 255, 255, 0);
+  border-right: 1px solid $mainColor-accent;
+  border-bottom: 1px solid rgba(255, 255, 255, 0);
+  border-left: 1px solid $mainColor-accent;
+  -webkit-transform: translateZ(0);
+  -ms-transform: translateZ(0);
+  transform: translateZ(0);
+  animation: load8 1.5s infinite linear;
+}
+@keyframes load8 {
+  0% {
+    -webkit-transform: rotate(0deg);
+    transform: rotate(0deg);
+  }
+  100% {
+    -webkit-transform: rotate(360deg);
+    transform: rotate(360deg);
+  }
+}

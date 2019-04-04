@@ -2,8 +2,19 @@ import React from 'react';
 import TextField from '@material-ui/core/TextField';
 import MenuItem from '@material-ui/core/MenuItem';
 import Switch from '@material-ui/core/Switch';
+import Button from '@material-ui/core/Button';
 import classnames from 'classnames';
+import axios from "axios";
+import RedmineApi from "../script/redmineApi";
+import BacklogApi from "../script/backlogApi";
 
+
+const STATUS_NONE = 0;
+const STATUS_LOADING = 1;
+const STATUS_SUCCESS = 0;
+const STATUS_ERROR = 0;
+const TYPE_REDMINE = "redmine";
+const TYPE_BACKLOG = "backlog";
 
 export default class NewSpaces extends React.Component {
     constructor(props) {
@@ -15,7 +26,8 @@ export default class NewSpaces extends React.Component {
             type: '',
             useAuth: false,
             authName: '',
-            authPass: ''
+            authPass: '',
+            status: STATUS_NONE
         };
         this.handleChange = this.handleChange.bind(this);
     }
@@ -28,13 +40,78 @@ export default class NewSpaces extends React.Component {
         console.log(event.target);
         if(event.target.type === "checkbox") this.setState({[event.target.name]: event.target.checked});
         else this.setState({[event.target.name]: event.target.value});
+        this.setState({status: STATUS_NONE});
     }
 
+    checkApi(e){
+        e.preventDefault();
+        this.setState({status: STATUS_LOADING});
+        let params = {
+            url: this.state.url,
+            key: this.state.key,
+            auth: this.state.useAuth ? {username: this.state.authName, password: this.state.authPass} : null
+        };
+
+        // TODO ここらへんもっと綺麗にできる
+        let api = null;
+        switch (this.state.type) {
+            case TYPE_REDMINE:
+                api = new RedmineApi(params);
+                break;
+            case TYPE_BACKLOG:
+                api = new BacklogApi(params);
+                break;
+        }
+
+        api.checkApi()
+            .then(response => {
+                // データ保存したりする
+                console.log(response);
+                this.setState({status: STATUS_NONE});
+            })
+            .catch(error => {
+                console.log(error);
+                this.setState({status: STATUS_ERROR});
+            })
+        ;
+    }
 
     render() {
-        console.log(this.state);
+
+        let checkButton;
+
+        switch (this.state.status) {
+            case STATUS_NONE:
+                // checkButton = <Button onClick={e => this.checkApi(e)}>Connect</Button>;
+                checkButton = (
+                    <div>
+                        <div className="checkButton__button"><Button onClick={e => this.checkApi(e)}>Connect</Button></div>
+                    </div>);
+                break;
+            case STATUS_LOADING:
+                checkButton = (
+                    <div>
+                        <div className="checkButton__button"><Button disabled onClick={e => this.checkApi(e)}>Connect</Button></div>
+                        <div className="checkButton__loader">Loading</div>
+                    </div>);
+                break;
+            case STATUS_SUCCESS:
+                checkButton = (
+                    <div>
+                        <div className="checkButton__button"><Button onClick={e => this.checkApi(e)}>Connect</Button></div>
+                    </div>);
+                break;
+            case STATUS_ERROR:
+                checkButton = (
+                    <div>
+                        <div className="checkButton__button"><Button color="secondary" disabled onClick={e => this.checkApi(e)}>Connection Error</Button></div>
+                    </div>);
+                break;
+        }
+
         return (
-            <form
+            <div>
+              <form
                 onSubmit={this.setConfig}
                 className="newSpace__window">
                 <div className="newSpace__content">
@@ -58,8 +135,8 @@ export default class NewSpaces extends React.Component {
                         margin="normal"
                         name="type"
                     >
-                        <MenuItem value="redmine">Redmine</MenuItem>
-                        <MenuItem value="backlog">Backlog</MenuItem>
+                        <MenuItem value={TYPE_REDMINE}>Redmine</MenuItem>
+                        <MenuItem value={TYPE_BACKLOG}>Backlog</MenuItem>
                         <MenuItem value="standalone" disabled>Standalone</MenuItem>
                     </TextField>
                     <TextField
@@ -112,9 +189,12 @@ export default class NewSpaces extends React.Component {
                             fullWidth
                         />
                     </div>
-
+                    <div className="checkButton__wrap">
+                        {checkButton}
+                    </div>
                 </div>
             </form>
+            </div>
         );
     }
 }
