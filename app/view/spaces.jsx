@@ -11,7 +11,8 @@ import Store from 'electron-config';
 import NewSpaces from "./newSpace";
 
 let store;
-
+let noConfig;
+let spaces = [];
 
 /*
 Spaces やりたきこと
@@ -26,11 +27,9 @@ export default class Spaces extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            spaces: [],
             spacesLength: 0,
-            noConfig: true,
         };
-
+        noConfig = true;
         this.loadConfig();
     }
 
@@ -38,27 +37,26 @@ export default class Spaces extends React.Component {
     loadConfig() {
         store = new Store();
         let config = store.get('spaces');
-        if (!config) {
+        if (!Array.isArray(config) || config.length === 0) {
             this.setState({
-                noConfig: true,
                 spacesLength: 0
             });
+            noConfig = true;
         }
         else {
+            spaces = config;
             this.setState({
-                spaces: config,
                 spacesLength: config.length,
-                noConfig: false
             });
+            noConfig = false;
         }
-        console.log(this.state);
     }
 
     render() {
 
-        // TODO もっと適切なやり方があろうに。
+        // TODO ここら辺なんとかする
         // TODO Spaceの追加機能
-        if(this.state.noConfig) return <NewSpaces complete={() => this.loadConfig()} spaceId={this.state.spacesLength}/>;
+        if(noConfig) return <NewSpaces complete={() => this.loadConfig()} spaceId={this.state.spacesLength}/>;
 
         return (
             <div className="spaces">
@@ -75,7 +73,7 @@ export default class Spaces extends React.Component {
                     </div>
                 </div>
                 <div className="spaces__issueArea">
-                    <Issues params={this.state.spaces[0]} spaceId="0"/>
+                    <Issues params={spaces[0]} spaceId="0"/>
                 </div>
             </div>
         );
