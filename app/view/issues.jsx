@@ -27,7 +27,8 @@ export default class Issues extends React.Component {
         };
         store = new Store();
         let params = props.params;
-        this.api = new RedmineApi(params);
+        if(params.type === "redmine") this.api = new RedmineApi(params);
+        else if(params.type === "backlog") this.api = new BacklogApi(params);
         this.getIssues();
         setInterval(() => { this.updateIssues();}, 60000);
     }
@@ -92,7 +93,7 @@ export default class Issues extends React.Component {
     restoreData(){
         let storedData = store.get('issueData' + this.props.spaceId);
         let issues = {};
-        if (Object.keys(storedData).length > 0) {
+        if (storedData != null && Object.keys(storedData).length > 0) {
             issues = this.api.compareUpdates(storedData, this.state.issues);
         } else {
             issues = this.state.issues;

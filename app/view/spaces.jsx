@@ -8,31 +8,56 @@ import {faStar as farStar} from '@fortawesome/free-regular-svg-icons';
 
 import Issues from "./issues";
 import Store from 'electron-config';
+import NewSpaces from "./newSpace";
 
+let store;
+let noConfig;
+let spaces = [];
 
+/*
+Spaces やりたきこと
+Space = ワークスペース　BacklogとかRedmineの1アカウントで利用できる範囲
+
+マウント時
+- 設定ファイルを読んで、保存されてるSpaceの情報を取得
+- ひとつもなかった場合、初期設定画面を開く
+
+ */
 export default class Spaces extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            spaces: [],
-            selectedIndex: 0
+            spacesLength: 0,
         };
+        noConfig = true;
+        this.loadConfig();
+    }
 
-        const store = new Store();
+    // NewSpacesで入力したスペース設定を取り込む
+    loadConfig() {
+        store = new Store();
         let config = store.get('spaces');
-        if (!config) {
-            config = [
-                {
-                    url: 'http://hogeohge/',
-                    key: 'xxxxxxxx'
-                }];
-            store.set('spaces', config);
+        if (!Array.isArray(config) || config.length === 0) {
+            this.setState({
+                spacesLength: 0
+            });
+            noConfig = true;
         }
-        this.state.spaces = config;
-
+        else {
+            spaces = config;
+            this.setState({
+                spacesLength: config.length,
+            });
+            noConfig = false;
+        }
     }
 
     render() {
+
+        // TODO ここら辺なんとかする
+        // TODO Spaceの追加機能
+        if(noConfig) return <NewSpaces complete={() => this.loadConfig()} spaceId={this.state.spacesLength}/>;
+
         return (
             <div className="spaces">
                 <div className="spaces__tabArea">
@@ -48,7 +73,7 @@ export default class Spaces extends React.Component {
                     </div>
                 </div>
                 <div className="spaces__issueArea">
-                    <Issues params={this.state.spaces[0]} spaceId="0"/>
+                    <Issues params={spaces[0]} spaceId="0"/>
                 </div>
             </div>
         );

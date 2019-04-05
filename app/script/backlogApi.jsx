@@ -2,7 +2,7 @@ import {ipcRenderer} from "electron";
 import axios from 'axios';
 import Api from './api'
 
-let path = {
+const path = {
     issues: "/api/v2/issues",
     issue: "/api/v2/issues/:issueIdOrKey",
     projects: "/api/v2/projects",
@@ -13,6 +13,9 @@ let userId = '';
 let assignedProjects = [];
 
 export default class BacklogApi extends Api{
+    static path() {
+        return path
+    }
     constructor(params) {
         super(params.url, {
             apiKey: params.key
@@ -30,7 +33,25 @@ export default class BacklogApi extends Api{
             });
         }
     }
-
+    checkApi() {
+        return new Promise( (resolve, reject) => {
+            axios.get(this.getUrl(path.myself), {params: this.params, timeout: 5000})
+                .then(response => {
+                    console.log(response);
+                    resolve(this._parseUserData(response.data));
+                })
+                .catch(error => reject(error))
+            ;
+        });
+    }
+    _parseUserData(json){
+        return {
+            userName: json.name,
+            userId: json.userId,
+            id: json.id,
+            // mail: json.mailAddress
+        }
+    }
     parseIssues(json){
         let results = [];
         json.data.forEach( (issue) => {
