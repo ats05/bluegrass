@@ -303,7 +303,8 @@ svg {
     margin: 5px 0;
     padding: 5px;
     background-color: #ffffff;
-    border-radius: 5px; }
+    border-radius: 5px;
+    white-space: pre-wrap; }
 
 .singleIssue__parentList {
   font-size: 0.7rem;
