@@ -179,15 +179,29 @@ svg {
   vertical-align: middle;
   display: flex;
   align-items: center;
-  justify-content: center; }
+  justify-content: center;
+  -moz-transition: -moz-transform 0.3s linear;
+  -webkit-transition: -webkit-transform 0.3s linear;
+  -o-transition: -o-transform 0.3s linear;
+  -ms-transition: -ms-transform 0.3s linear;
+  transition: color 0.2s linear; }
+  .issueItems__watcher:hover {
+    color: #C9F0FF; }
   .issueItems__watcher--watch {
-    color: #0EB1D2; }
+    color: #ecde27;
+    -moz-transform: rotateY(180deg);
+    -webkit-transform: rotateY(180deg);
+    -o-transform: rotateY(180deg);
+    -ms-transform: rotateY(180deg); }
 
-.issueItems__content {
-  position: relative; }
-  .issueItems__content--updated {
-    background-color: #FFFBD5; }
-  .issueItems__content--dogEar::after {
+.issueItems__dogEarButton {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 25px;
+  height: 100%;
+  transition: border-color 0.2s linear; }
+  .issueItems__dogEarButton:hover::after {
     background-color: #fff;
     position: absolute;
     top: 0;
@@ -195,7 +209,21 @@ svg {
     content: "";
     border-style: solid;
     border-width: 0 0 15px 15px;
+    border-color: transparent transparent #34E4EA transparent; }
+
+.issueItems__content {
+  position: relative; }
+  .issueItems__content--updated {
+    background-color: #FFFBD5; }
+  .issueItems__content--dogEar::after {
     border-color: transparent transparent #cccccc transparent;
+    background-color: #fff;
+    position: absolute;
+    top: 0;
+    left: 0;
+    content: "";
+    border-style: solid;
+    border-width: 0 0 15px 15px;
     z-index: 100; }
   .issueItems__content--closed {
     background-color: #b0b0b0;

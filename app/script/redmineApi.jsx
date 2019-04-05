@@ -117,7 +117,8 @@ export default class RedmineApi extends Api{
             comments: this._parseComments(issue.journals),
             updatedFlag: false,
             dogEarFlag: false,
-            closedFlag: false
+            closedFlag: false,
+            watchFlag: false,
         };
     }
     _parseComments(journals) {

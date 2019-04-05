@@ -18,6 +18,16 @@
 
 }
 
+@mixin dogEarStyle{
+  background-color: #fff;
+  position: absolute;
+  top: 0;
+  left: 0;
+  content: "";
+  border-style: solid;
+  border-width: 0 0 15px 15px;
+}
+
 .issueItems {
   &__watcher {
     color: transparent;
@@ -31,8 +41,32 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    -moz-transition: -moz-transform 0.3s linear;
+    -webkit-transition: -webkit-transform 0.3s linear;
+    -o-transition: -o-transform 0.3s linear;
+    -ms-transition: -ms-transform 0.3s linear;
+    transition: color 0.2s linear;
+    &:hover {
+      color: $color-hover;
+    }
     &--watch {
-      color: $mainColor-accent;
+      color: $color-watch;
+      -moz-transform: rotateY(180deg);
+      -webkit-transform: rotateY(180deg);
+      -o-transform: rotateY(180deg);
+      -ms-transform: rotateY(180deg);
+    }
+  }
+  &__dogEarButton {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 25px;
+    height: 100%;
+    transition: border-color 0.2s linear;
+    &:hover::after {
+      @include dogEarStyle;
+      border-color: transparent transparent $mainColor-highLight transparent;
     }
   }
   &__content {
@@ -41,14 +75,8 @@
       background-color: $color-updated;
     }
     &--dogEar::after {
-      background-color: #fff;
-      position: absolute;
-      top: 0;
-      left: 0;
-      content: "";
-      border-style: solid;
-      border-width: 0 0 15px 15px;
       border-color: transparent transparent #cccccc transparent;
+      @include dogEarStyle;
       z-index: 100;
     }
     &--closed {

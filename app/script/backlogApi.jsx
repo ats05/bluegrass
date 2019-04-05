@@ -80,7 +80,8 @@ export default class BacklogApi extends Api{
             parentId: issue.parentIssueId ? issue.parentIssueId : '',
             comments: [],
             updatedFlag: false,
-            dogEarFlag: false
+            dogEarFlag: false,
+            watchFlag: false
         }
     }
     _parseComments(comments) {

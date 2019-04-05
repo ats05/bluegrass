@@ -29,6 +29,7 @@ export default class Api {
                 update.updatedFlag = old.updatedFlag;
                 update.dogEarFlag = old.dogEarFlag;
                 update.closedFlag = old.closedFlag;
+                update.watchFlag = old.watchFlag;
                 if(Moment(update.updateDate) > Moment(old.updateDate)) {
                     update.updatedFlag = true;
                     updatedIds.push(update.id.toString());

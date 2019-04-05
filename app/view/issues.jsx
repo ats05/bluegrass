@@ -23,14 +23,14 @@ export default class Issues extends React.Component {
         this.state = {
             issues: '',
             issueList: '',
-            singleIssue: ''
+            singleIssue: '',
         };
         store = new Store();
         let params = props.params;
-        console.log(params);
         if(params.service === "redmine") this.api = new RedmineApi(params);
         else if(params.service === "backlog") this.api = new BacklogApi(params);
         this.getIssues();
+        this.toggleWatch = this.toggleWatch.bind(this);
         setInterval(() => { this.updateIssues();}, 60000);
     }
     openIssue(e, issue){
@@ -48,15 +48,26 @@ export default class Issues extends React.Component {
         this.setState({singleIssue: issue});
     }
     toggleWatch(e, issue) {
-        console.log("watch " + issue.id);
         e.preventDefault();
         let issues = this.state.issues;
-        issues[issue.id].watcher = !issues[issue.id].watcher;
+        issues[issue.id].watchFlag = !issues[issue.id].watchFlag;
+
+        // TODO 配列を置き換えてもレンダリングは行われないっぽい
         this.setState({
             issues: issues,
         });
-
+        // カセットにクリックイベントが行かないように止める
         e.stopPropagation();
+    }
+    toggleDogEar(e, issue) {
+        e.preventDefault();
+        let issues = this.state.issues;
+        issues[issue.id].dogEarFlag = !issues[issue.id].dogEarFlag;
+        this.setState({
+            issues: issues,
+        });
+        // カセットにクリックイベントが行かないように止める
+        // e.stopPropagation();
     }
 
     closeIssue(){
@@ -117,6 +128,7 @@ export default class Issues extends React.Component {
                 updatedFlag: issues[issueId].updatedFlag,
                 dogEarFlag: issues[issueId].dogEarFlag,
                 closedFlag: issues[issueId].closedFlag,
+                watchFlag: issues[issueId].watchFlag,
                 storedItemFlag: true
             }
         });
@@ -180,9 +192,13 @@ export default class Issues extends React.Component {
                 </ListItem>
                 {/*<span className="issueItems__dogEarButton"></span>*/}
                 <div
-                    className={classnames("issueItems__watcher", {"issueItems__watcher--watch": issue.watcherFlag})}
+                    className={classnames("issueItems__watcher", {"issueItems__watcher--watch": issue.watchFlag})}
                     onClick={e => this.toggleWatch(e, issue)}>
                     <FontAwesomeIcon icon={fasStar}/>
+                </div>
+                <div
+                    className="issueItems__dogEarButton"
+                    onClick={e => this.toggleDogEar(e, issue)}>
                 </div>
 
             </div>
