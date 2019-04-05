@@ -27,8 +27,9 @@ export default class Issues extends React.Component {
         };
         store = new Store();
         let params = props.params;
-        if(params.type === "redmine") this.api = new RedmineApi(params);
-        else if(params.type === "backlog") this.api = new BacklogApi(params);
+        console.log(params);
+        if(params.service === "redmine") this.api = new RedmineApi(params);
+        else if(params.service === "backlog") this.api = new BacklogApi(params);
         this.getIssues();
         setInterval(() => { this.updateIssues();}, 60000);
     }

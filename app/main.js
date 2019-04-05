@@ -26,6 +26,7 @@ app.on('window-all-closed', () => {
 
 app.on('ready', () => {
   mainWindow = new BrowserWindow({
+      titleBarStyle: 'hidden',
       width: 1280,
       height: 920,
       allowRunningInsecureContent: true
