@@ -30,28 +30,35 @@ export default class Spaces extends React.Component {
             spacesLength: 0,
             noConfig: true,
         };
+
+        this.loadConfig();
     }
 
     // NewSpacesで入力したスペース設定を取り込む
     loadConfig() {
         store = new Store();
         let config = store.get('spaces');
-        // if (!config) {
-            this.state.noConfig = true;
-            this.state.spacesLength = 0;
-        // }
-        // else {
-        //     this.state.spaces = config;
-        //     this.state.spacesLength = config.length;
-        //     this.state.noConfig = false;
-        // }
+        if (!config) {
+            this.setState({
+                noConfig: true,
+                spacesLength: 0
+            });
+        }
+        else {
+            this.setState({
+                spaces: config,
+                spacesLength: config.length,
+                noConfig: false
+            });
+        }
+        console.log(this.state);
     }
 
     render() {
 
         // TODO もっと適切なやり方があろうに。
         // TODO Spaceの追加機能
-        if(this.state.noConfig) return <NewSpaces complete={this.loadConfig} spaceId={this.state.spacesLength}/>;
+        if(this.state.noConfig) return <NewSpaces complete={() => this.loadConfig()} spaceId={this.state.spacesLength}/>;
 
         return (
             <div className="spaces">

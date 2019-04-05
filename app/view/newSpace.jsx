@@ -4,9 +4,12 @@ import MenuItem from '@material-ui/core/MenuItem';
 import Switch from '@material-ui/core/Switch';
 import Button from '@material-ui/core/Button';
 import classnames from 'classnames';
-import axios from "axios";
 import RedmineApi from "../script/redmineApi";
 import BacklogApi from "../script/backlogApi";
+import {faCheck} from '@fortawesome/free-solid-svg-icons'
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import IconButton from '@material-ui/core/IconButton';
+import Store from 'electron-config';
 
 
 const STATUS_NONE = 0;
@@ -15,34 +18,29 @@ const STATUS_SUCCESS = 20;
 const STATUS_ERROR = 30;
 const TYPE_REDMINE = "redmine";
 const TYPE_BACKLOG = "backlog";
+let store;
 
 export default class NewSpaces extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            name: "",
+            spaceName: "",
             key: '',
             url: '',
             type: '',
             useAuth: false,
             authName: '',
             authPass: '',
-            status: STATUS_NONE
+            status: STATUS_NONE,
+            config: null
         };
         this.handleChange = this.handleChange.bind(this);
     }
-
-    setConfig() {
-
-    }
-
     handleChange(event) {
-        console.log(event.target);
         if(event.target.type === "checkbox") this.setState({[event.target.name]: event.target.checked});
         else this.setState({[event.target.name]: event.target.value});
-        this.setState({status: STATUS_NONE});
+        if(this.state.status === STATUS_ERROR || this.state.status === STATUS_SUCCESS) this.setState({status: STATUS_NONE});
     }
-
     checkApi(e){
         e.preventDefault();
         this.setState({status: STATUS_LOADING});
@@ -70,7 +68,8 @@ export default class NewSpaces extends React.Component {
             .then(response => {
                 // データ保存したりする
                 console.log(response);
-                this.setState({status: STATUS_NONE});
+                this.setState({config: response});
+                this.setState({status: STATUS_SUCCESS});
             })
             .catch(error => {
                 console.log(error);
@@ -78,9 +77,37 @@ export default class NewSpaces extends React.Component {
             })
         ;
     }
+    setConfig(e) {
+        e.preventDefault();
+        let config = {
+            userName: this.state.config.userName,
+            userId: this.state.config.userId,
+            id: this.state.config.id,
+            spaceName: this.state.spaceName,
+            service: this.state.type,
+            url: this.state.url,
+            key: this.state.key,
+            auth: this.state.useAuth ? {username: this.state.authName, password: this.state.authPass} : ''
+        };
+
+        store = new Store();
+        let storeData = null;
+        if (this.props.spaceId === 0){
+            storeData = [];
+            storeData[this.props.spaceId] = config;
+        }
+        else {
+            storeData = store.get('spaces');
+            storeData[this.props.spaceId] = config;
+        }
+        store.set("spaces", storeData);
+        console.log(storeData);
+
+        this.props.complete();
+
+    }
 
     render() {
-
         let checkButton;
 
         switch (this.state.status) {
@@ -101,7 +128,12 @@ export default class NewSpaces extends React.Component {
             case STATUS_SUCCESS:
                 checkButton = (
                     <div>
-                        <div className="checkButton__button"><Button onClick={e => this.checkApi(e)}>Connect</Button></div>
+                        <div className="checkButton__button">
+                            <IconButton aria-label="Delete" color="primary" onClick={e => this.setConfig(e)}>
+                                <FontAwesomeIcon icon={faCheck}/>
+                            </IconButton>
+                        </div>
+                        <div className="checkButton__message">Hello, {this.state.config.userName}</div>
                     </div>);
                 break;
             case STATUS_ERROR:
@@ -121,8 +153,8 @@ export default class NewSpaces extends React.Component {
                     <TextField
                         label="SPACE NAME"
                         className="newSpace__input"
-                        value={this.state.name}
-                        name="name"
+                        value={this.state.spaceName}
+                        name="spaceName"
                         onChange={this.handleChange}
                         margin="normal"
                         fullWidth

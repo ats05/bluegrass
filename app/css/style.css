@@ -119,8 +119,12 @@ svg {
   margin-top: 40px; }
 
 .checkButton__button {
-  margin: 0 auto;
-  z-index: 100; }
+  margin: 0 auto; }
+
+.checkButton__message {
+  margin-top: 20px;
+  font-size: 0.9rem;
+  color: #666666; }
 
 .checkButton__loader, .checkButton__loader:after {
   border-radius: 50%;
@@ -129,7 +133,6 @@ svg {
   position: absolute; }
 
 .checkButton__loader {
-  z-index: 0;
   margin: -57px auto 0;
   font-size: 10px;
   position: relative;

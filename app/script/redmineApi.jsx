@@ -4,8 +4,8 @@ import Moment from 'moment';
 import Api from './api'
 
 export const path = {
-    issues: "issues.json",
-    issue: "issues",
+    issues: "/issues.json",
+    issue: "/issues",
     myself: "/users/current.json"
 };
 
@@ -39,7 +39,7 @@ export default class RedmineApi extends Api{
     }
     _parseUserData(json){
         return {
-            userName: json.firstname + json.lastname,
+            userName: json.firstname + ' ' + json.lastname,
             userId: json.login,
             id: json.id,
             // mail: json.mail
