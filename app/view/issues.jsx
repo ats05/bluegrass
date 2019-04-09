@@ -29,9 +29,9 @@ export default class Issues extends React.Component {
         let params = props.params;
         if(params.service === "redmine") this.api = new RedmineApi(params);
         else if(params.service === "backlog") this.api = new BacklogApi(params);
-        this.getIssues();
         this.toggleWatch = this.toggleWatch.bind(this);
         setInterval(() => { this.updateIssues();}, 60000);
+        this.updateIssues();
     }
     openIssue(e, issue){
         e.preventDefault();
@@ -77,30 +77,20 @@ export default class Issues extends React.Component {
 
     // 更新確認
     updateIssues() {
-        this.api.updateIssues().then( (response) => {
-            let updates = this.api.compareUpdates(this.state.issues, response);
-
+        this.api.update().then(() => {
+            // この時点でthis.api.getIssues()は最新全チケット一覧を返してくれる
+            let issues = this.api.getIssues();
             let issueList = [];
-            Object.keys(updates).forEach( (issueId) => {
-                issueList.push(this.createCassette(updates[issueId]));
+            Object.keys(issues).forEach( (issueId) => {
+                issueList.push(this.createCassette(issues[issueId]));
             });
             this.setState({
-                issues: updates,
                 issueList: issueList
             });
-            this.storeData();
-        }, (e) => {console.log(e)});
+        });
+
     }
-    // 0からのデータ取得
-    getIssues(){
-        this.api.issues().then( (response) => {
-            let issues = response;
-            this.setState({
-                issues: issues,
-            });
-            this.restoreData()
-        }, (e) => {console.log(e)});
-    }
+
     // 保存してあるチケットをチェック
     restoreData(){
         let storedData = store.get('issueData' + this.props.spaceId);

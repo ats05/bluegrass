@@ -7,12 +7,13 @@ const PROJECT_COLOR_MAX = 12;
 let path = {};
 let userId = '';
 let assignedProjects = [];
-let issues = {};
+
 
 export default class Api {
     constructor(url, params) {
         this.url = url;
         this.params = params;
+        this.issuesObject = {};
     }
     getUrl(path){
         return this.url + path

@@ -25,6 +25,7 @@ export default class RedmineApi extends Api{
             key: params.key,
             auth: params.auth
         });
+
     }
     checkApi() {
         return new Promise( (resolve, reject) => {
@@ -46,23 +47,37 @@ export default class RedmineApi extends Api{
         }
     }
 
-    parseIssues(json){
+    parseIssues(json, params = {}){
         let results = {};
         json.data.issues.forEach( (issue) => {
-            results[issue.id] = this._parseIssue(issue);
+            results[issue.id] = this._parseIssue(issue, params);
         });
         return results;
     }
-    // チケット一覧取得（parseして返す）
-    issues(project_id = null, status_id = null, sort = "updated_on") {
+    // 担当しているチケットを取得
+    _getIssues() {
         let params = {
             assigned_to_id: "me"
         };
-        let payload = Object.assign(this.params, params);
+        let payload = Object.assign(params, this.params);
 
         return new Promise( (resolve, reject) => {
             axios.get(this.getUrl(path.issues), {params: payload})
                 .then(response => resolve(this.parseIssues(response)))
+                .catch(error => reject(error))
+            ;
+        });
+    }
+    // 自身がウォッチしているチケットを取得
+    _watchIssues(){
+        let params = {
+            watcher_id: "me"
+        };
+        let payload = Object.assign(params, this.params);
+
+        return new Promise( (resolve, reject) => {
+            axios.get(this.getUrl(path.issues), {params: payload})
+                .then(response => resolve(this.parseIssues(response, {watchFlag: true})))
                 .catch(error => reject(error))
             ;
         });
@@ -82,6 +97,29 @@ export default class RedmineApi extends Api{
             ;
         });
     }
+
+    /*
+    各種Issues関数でPromiseを返す→解決されたら、
+     */
+    update() {
+        return Promise.all([
+            this._getIssues().then( (response) => {
+                console.log("get assigned issues");
+                console.log(response);
+                Object.assign(this.issuesObject, response);
+            }, (e) => {console.log(e)}),
+            this._watchIssues().then( (response) => {
+                console.log("get watching issues");
+                console.log(response);
+                Object.assign(this.issuesObject, response);
+            }, (e) => {console.log(e)})
+        ]);
+    }
+    getIssues() {
+        return this.issuesObject;
+    }
+
+
     updateIssues(){
         let params = {
             assigned_to_id: "me"
@@ -95,7 +133,7 @@ export default class RedmineApi extends Api{
             ;
         });
     }
-    _parseIssue(issue) {
+    _parseIssue(issue, params) {
         return {
             id: issue.id,
             title: issue.subject,
@@ -118,7 +156,7 @@ export default class RedmineApi extends Api{
             updatedFlag: false,
             dogEarFlag: false,
             closedFlag: false,
-            watchFlag: false,
+            watchFlag: params.watchFlag === true,
         };
     }
     _parseComments(journals) {

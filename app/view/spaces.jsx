@@ -38,16 +38,12 @@ export default class Spaces extends React.Component {
         store = new Store();
         let config = store.get('spaces');
         if (!Array.isArray(config) || config.length === 0) {
-            this.setState({
-                spacesLength: 0
-            });
+            this.state.spacesLength = 0;
             noConfig = true;
         }
         else {
             spaces = config;
-            this.setState({
-                spacesLength: config.length,
-            });
+            this.state.spacesLength = config.length;
             noConfig = false;
         }
     }
