@@ -13,8 +13,8 @@ const ISSUE_PARAMS = {
 
 };
 let userName;
-let userId
-
+let userId;
+// watcher_id=　でウォッチしてるチケットを取れる
 
 export default class RedmineApi extends Api{
     static path() {
