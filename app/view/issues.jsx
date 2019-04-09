@@ -35,17 +35,17 @@ export default class Issues extends React.Component {
     }
     openIssue(e, issue){
         e.preventDefault();
-        let issues = this.state.issues;
-        issues[issue.id].updatedFlag = false;
-        this.setState({
-            issues: issues,
-        });
+        // let issues = this.state.issues;
+        // issues[issue.id].updatedFlag = false;
+        // this.setState({
+            // issues: issues,
+        // });
 
-        this.api.issue(issue.id).then( (response) => {
-            this.setState({singleIssue: response});
-            console.log("update");
-        });
-        this.setState({singleIssue: issue});
+        // this.api.issue(issue.id).then( (response) => {
+        //     this.setState({singleIssue: response});
+        //     console.log("update");
+        // });
+        // this.setState({singleIssue: issue});
     }
     toggleWatch(e, issue) {
         e.preventDefault();
