@@ -24,6 +24,7 @@ export default class Issues extends React.Component {
             issues: '',
             issueList: '',
             singleIssue: '',
+            issueComments: ''
         };
         store = new Store();
         let params = props.params;
@@ -33,19 +34,17 @@ export default class Issues extends React.Component {
         setInterval(() => { this.updateIssues();}, 60000);
         this.updateIssues();
     }
-    openIssue(e, issue){
+    openIssue(e, issueId){
         e.preventDefault();
-        // let issues = this.state.issues;
-        // issues[issue.id].updatedFlag = false;
-        // this.setState({
-            // issues: issues,
-        // });
+        let issue = this.api.getIssue(issueId);
+        issue.updatedFlag = false;
+        this.api.setIssue(issueId, issue);
 
-        // this.api.issue(issue.id).then( (response) => {
-        //     this.setState({singleIssue: response});
-        //     console.log("update");
-        // });
-        // this.setState({singleIssue: issue});
+        this.api.issue(issueId).then((response) => {
+            this.setState({singleIssue: response});
+        })
+
+
     }
     toggleWatch(e, issue) {
         e.preventDefault();
@@ -174,7 +173,7 @@ export default class Issues extends React.Component {
             <div className={statusClass}>
                 <ListItem
                     button
-                    onClick={e => this.openIssue(e, issue)}>
+                    onClick={e => this.openIssue(e, issue.id)}>
                     {/*</Avatar>*/}
                     <ListItemText
                         primary={primaryText}

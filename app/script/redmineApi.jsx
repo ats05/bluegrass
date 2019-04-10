@@ -115,25 +115,26 @@ export default class RedmineApi extends Api{
             }, (e) => {console.log(e)})
         ]);
     }
+    // チケット一覧を返す
     getIssues() {
         return this.issuesObject;
     }
-
-
-    updateIssues(){
-        let params = {
-            assigned_to_id: "me"
-        };
-        let payload = Object.assign(this.params, params);
-
-        return new Promise( (resolve, reject) => {
-            axios.get(this.getUrl(path.issues), {params: payload})
-                .then(response => resolve(this.parseIssues(response)))
-                .catch(error => reject(error))
-            ;
-        });
+    // チケット単品を返す
+    getIssue(issueId) {
+        return this.issuesObject[issueId];
     }
-    _parseIssue(issue, params) {
+    // 指定IDのチケットを更新する（リモートも更新）
+    setIssue(issue, issueId = null) {
+        if (issueId == null) issueId = issue.id;
+        return this.issuesObject[issueId];
+    }
+    _parseIssue(issue, params = {}) {
+        params = Object.assign({
+            updatedFlag: false,
+            dogEarFlag: false,
+            closedFlag: false,
+            watchFlag : false
+        }, params);
         return {
             id: issue.id,
             title: issue.subject,
@@ -156,7 +157,7 @@ export default class RedmineApi extends Api{
             updatedFlag: false,
             dogEarFlag: false,
             closedFlag: false,
-            watchFlag: params.watchFlag === true,
+            watchFlag: params.watchFlag // TODO どうにかする
         };
     }
     _parseComments(journals) {
