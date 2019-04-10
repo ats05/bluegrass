@@ -39,12 +39,11 @@ export default class Issues extends React.Component {
         let issue = this.api.getIssue(issueId);
         issue.updatedFlag = false;
         this.api.setIssue(issueId, issue);
+        this.setState({singleIssue: issue});
 
         this.api.issue(issueId).then((response) => {
             this.setState({singleIssue: response});
         })
-
-
     }
     toggleWatch(e, issue) {
         e.preventDefault();
