@@ -9,23 +9,16 @@ const path = {
     comments: "/api/v2/issues/:issueIdOrKey/comments",
     myself: '/api/v2/users/myself'
 };
-let userId = '';
 let assignedProjects = [];
 
 export default class BacklogApi extends Api{
     static path() {
         return path
     }
-    constructor(params) {
+    constructor(params, userData) {
         super(params.url, {
-            apiKey: params.key
-        });
-
-        if (!userId) {
-            this.myself().then((response) => {
-                userId = response.id;
-            });
-        }
+            apiKey: params.key,
+        }, userData);
         if (assignedProjects.length == 0) {
             this.projects().then((response) => {
                 assignedProjects = response;
@@ -52,15 +45,20 @@ export default class BacklogApi extends Api{
             // mail: json.mailAddress
         }
     }
-    parseIssues(json){
+    parseIssues(json, params = {}){
         let results = [];
         json.data.forEach( (issue) => {
-            results[issue.id] = this._parseIssue(issue);
+            results[issue.id] = this._parseIssue(issue, params);
         });
         return results;
     }
-    _parseIssue(issue) {
-        console.log(issue);
+    _parseIssue(issue, params = {}) {
+        params = Object.assign({
+            updatedFlag: false,
+            dogEarFlag: false,
+            closedFlag: false,
+            watchFlag : false
+        }, params);
         return {
             id: issue.id,
             issueKey: issue.issueKey,
@@ -81,7 +79,7 @@ export default class BacklogApi extends Api{
             comments: [],
             updatedFlag: false,
             dogEarFlag: false,
-            watchFlag: false
+            watchFlag: params.watchFlag
         }
     }
     _parseComments(comments) {
@@ -107,10 +105,10 @@ export default class BacklogApi extends Api{
         return project ? project.name : '';
     }
 
-    issues(project_id = null, status_id = null, assigned_to_id = "me", sort = "updated") {
-        console.log('issues userId : ' + userId);
+    _getIssues(project_id = null, status_id = null, assigned_to_id = "me", sort = "updated") {
+        console.log('issues user id : ' + this.id);
         let params = {
-            assigneeId: userId ? [userId] : [],  //TODO settingかなんかで自分が担当のチケットか自分が参加してるプロジェクトかってしたい
+            assigneeId: this.id ? [this.id] : [],  //TODO settingかなんかで自分が担当のチケットか自分が参加してるプロジェクトかってしたい
             sort: sort,
             order: 'desc'
         };
@@ -149,23 +147,31 @@ export default class BacklogApi extends Api{
             ;
         });
     }
-    updateIssues(project_id = null, status_id = null, assigned_to_id = "me", sort = "updated"){
-        console.log('userId : ' + userId);
-        let params = {
-            assigneeId: userId ? [userId] : [],  //TODO settingかなんかで自分が担当のチケットか自分が参加してるプロジェクトかってしたい
-            sort: sort,
-            order: 'desc'
-        };
-        let payload = Object.assign(params, this.params);
-
-        return new Promise( (resolve, reject) => {
-            axios.get(this.getUrl(path.issues), {params: payload})
-                .then(response => resolve(this.parseIssues(response)))
-                .catch(error => reject(error))
-            ;
-        });
+    /*
+    各種Issues関数でPromiseを返す→解決されたら全部まとめて返す
+ */
+    update(){
+        return Promise.all([
+            this._getIssues().then( (response) => {
+                console.log("get assigned issues");
+                console.log(response);
+                this.compareUpdates(this.issuesObject, response);
+            }, (e) => {console.log(e)}),
+        ]);
     }
-
+    // チケット一覧を返す
+    getIssues() {
+        return this.issuesObject;
+    }
+    // チケット単品を返す
+    getIssue(issueId) {
+        return this.issuesObject[issueId];
+    }
+    // 指定IDのチケットを更新する（リモートも更新）
+    setIssue(issue, issueId = null) {
+        if (issueId == null) issueId = issue.id;
+        return this.issuesObject[issueId];
+    }
     comments(issueId, count = 10, order = 'asc') {
         let params = {
             count: count,
@@ -182,16 +188,6 @@ export default class BacklogApi extends Api{
 
     getIssueUrl(issue) {
         return this.url +  "/view/" + issue.issueKey;
-    }
-
-    myself() {
-        let payload = Object.assign(this.params);
-        return new Promise( (resolve, reject) => {
-            axios.get(this.getUrl(path.myself), {params: payload})
-                .then(response => (resolve(response.data)))
-                .catch(error => reject(error))
-            ;
-        });
     }
 
     projects(archived = false, all = false) {

@@ -12,19 +12,18 @@ export const path = {
 const ISSUE_PARAMS = {
 
 };
-let userName;
-let userId;
+
 // watcher_id=　でウォッチしてるチケットを取れる
 
 export default class RedmineApi extends Api{
     static path() {
         return path
     }
-    constructor(params) {
+    constructor(params, userData) {
         super(params.url, {
             key: params.key,
             auth: params.auth
-        });
+        }, userData);
 
     }
     checkApi() {
@@ -99,19 +98,19 @@ export default class RedmineApi extends Api{
     }
 
     /*
-    各種Issues関数でPromiseを返す→解決されたら、
+    各種Issues関数でPromiseを返す→解決されたら全部まとめて返す
      */
     update() {
         return Promise.all([
             this._getIssues().then( (response) => {
                 console.log("get assigned issues");
                 console.log(response);
-                Object.assign(this.issuesObject, response);
+                this.compareUpdates(this.issuesObject, response);
             }, (e) => {console.log(e)}),
             this._watchIssues().then( (response) => {
                 console.log("get watching issues");
                 console.log(response);
-                Object.assign(this.issuesObject, response);
+                this.compareUpdates(this.issuesObject, response);
             }, (e) => {console.log(e)})
         ]);
     }
@@ -157,7 +156,7 @@ export default class RedmineApi extends Api{
             updatedFlag: false,
             dogEarFlag: false,
             closedFlag: false,
-            watchFlag: params.watchFlag // TODO どうにかする
+            watchFlag: params.watchFlag
         };
     }
     _parseComments(journals) {

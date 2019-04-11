@@ -37,8 +37,8 @@ export default class Spaces extends React.Component {
     loadConfig() {
         store = new Store();
         let config = store.get('spaces');
-        if (!Array.isArray(config) || config.length === 0) {
-            this.state.spacesLength = 0;
+        if (!Array.isArray(config) || config.length === 1) {
+            this.state.spacesLength = 1;
             noConfig = true;
         }
         else {
@@ -69,7 +69,7 @@ export default class Spaces extends React.Component {
                     </div>
                 </div>
                 <div className="spaces__issueArea">
-                    <Issues params={spaces[0]} spaceId="0"/>
+                    <Issues config={spaces[1]} spaceId="1"/>
                 </div>
             </div>
         );

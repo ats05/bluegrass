@@ -10,10 +10,15 @@ let assignedProjects = [];
 
 
 export default class Api {
-    constructor(url, params) {
+    constructor(url, params, userData = null) {
         this.url = url;
         this.params = params;
         this.issuesObject = {};
+        if(userData != null) {
+            this.id = userData.id;
+            this.userId = userData.userID;
+            this.userName = userData.userName;
+        }
     }
     getUrl(path){
         return this.url + path
@@ -57,8 +62,9 @@ export default class Api {
         //         else currentIssues[issueId].closedFlag = true;
         //     }
         // });
+        this.issuesObject = currentIssues;
 
-        return currentIssues;
+        // return currentIssues;
     }
 
 }
