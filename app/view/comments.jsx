@@ -36,7 +36,7 @@ export default class Comments extends React.Component {
         // this.setState({show: true});
         nextProps.comments.forEach( (comment) => {
             comments.push(
-                <Card className="comments__card">
+                <Card className="comments__card" key={comments.length}>
                     <CardContent>
                         <div className="comments__header">
                             <span className="comment__authorName">{comment.authorName}</span>

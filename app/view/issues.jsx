@@ -177,7 +177,7 @@ export default class Issues extends React.Component {
                 </span>
             </span>;
         return (
-            <div className={statusClass}>
+            <div className={statusClass} key={issue.id}>
                 <ListItem
                     button
                     onClick={e => this.openIssue(e, issue.id)}>
@@ -186,7 +186,7 @@ export default class Issues extends React.Component {
                         primary={primaryText}
                         secondary={secondaryText}/>
                 </ListItem>
-                {/*<span className="issueItems__dogEarButton"></span>*/}
+                <span className="issueItems__dogEarButton"></span>
                 <div
                     className={classnames("issueItems__watcher", {"issueItems__watcher--watch": issue.watchFlag})}
                     onClick={e => this.toggleWatch(e, issue.id)}>
@@ -196,7 +196,6 @@ export default class Issues extends React.Component {
                     className="issueItems__dogEarButton"
                     onClick={e => this.toggleDogEar(e, issue.id)}>
                 </div>
-
             </div>
         );
     }
