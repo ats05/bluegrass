@@ -6,7 +6,8 @@ import Api from './api'
 export const path = {
     issues: "/issues.json",
     issue: "/issues",
-    myself: "/users/current.json"
+    myself: "/users/current.json",
+    watcher: ""
 };
 
 const ISSUE_PARAMS = {
@@ -126,6 +127,38 @@ export default class RedmineApi extends Api{
     setIssue(issue, issueId = null) {
         if (issueId == null) issueId = issue.id;
         return this.issuesObject[issueId];
+    }
+    watchIssue(issueId) {
+        let params = {
+            user_id: this.id
+        };
+        let payload = Object.assign(this.params, params);
+
+        // TODO Path整理
+        let url = this.getUrl(path.issue) + "/" + issueId + "/watchers.json";
+
+        return new Promise( (resolve, reject) => {
+            axios.post(url, payload)
+                .then(response => resolve(console.log(response)))
+                .catch(error => reject(error))
+            ;
+        });
+    }
+    unWatchIssue(issueId) {
+        let params = {
+            user_id: this.id
+        };
+        let payload = Object.assign(this.params, params);
+
+        // TODO Path整理
+        let url = this.getUrl(path.issue) + "/" + issueId + "/watchers/" + this.id + ".json";
+
+        return new Promise( (resolve, reject) => {
+            axios.delete(url, {data: payload})
+                .then(response => resolve(console.log(response)))
+                .catch(error => reject(error))
+            ;
+        });
     }
     _parseIssue(issue, params = {}) {
         params = Object.assign({

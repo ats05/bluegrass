@@ -61,6 +61,8 @@ export default class Issues extends React.Component {
         issue.watchFlag = !issue.watchFlag;
         this.api.setIssue(issueId, issue);
 
+        if(issue.watchFlag) this.api.watchIssue(issueId);
+        else this.api.unWatchIssue(issueId);
         // カセットにクリックイベントが行かないように止める
         e.stopPropagation();
     }

@@ -172,6 +172,12 @@ export default class BacklogApi extends Api{
         if (issueId == null) issueId = issue.id;
         return this.issuesObject[issueId];
     }
+    watchIssue(issueId) {
+
+    }
+    unWatchIssue(issueId) {
+
+    }
     comments(issueId, count = 10, order = 'asc') {
         let params = {
             count: count,
