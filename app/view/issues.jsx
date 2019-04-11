@@ -95,41 +95,40 @@ export default class Issues extends React.Component {
         });
 
     }
-
-    // 保存してあるチケットをチェック
-    restoreData(){
-        let storedData = store.get('issueData' + this.props.spaceId);
-        let issues = {};
-        if (storedData != null && Object.keys(storedData).length > 0) {
-            issues = this.api.compareUpdates(storedData, this.state.issues);
-        } else {
-            issues = this.state.issues;
-        }
-        let issueList = [];
-        Object.keys(issues).forEach( (issueId) => {
-            issueList.push(this.createCassette(issues[issueId]));
-        });
-        this.setState({
-            issues: issues,
-            issueList: issueList
-        });
-    }
-    storeData() {
-        let issues = this.state.issues;
-        let storeData = {};
-        Object.keys(issues).forEach( (issueId) => {
-            storeData[issueId] = {
-                updateDate: issues[issueId].updateDate,
-                updatedFlag: issues[issueId].updatedFlag,
-                dogEarFlag: issues[issueId].dogEarFlag,
-                closedFlag: issues[issueId].closedFlag,
-                watchFlag: issues[issueId].watchFlag,
-                storedItemFlag: true
-            }
-        });
-        store.set('issueData' + this.props.spaceId, storeData);
-
-    }
+    //
+    // // 保存してあるチケットをチェック
+    // restoreData(){
+    //     let storedData = store.get('issueData' + this.props.spaceId);
+    //     let issues = {};
+    //     if (storedData != null && Object.keys(storedData).length > 0) {
+    //         issues = this.api.compareUpdates(storedData, this.api.getIssues());
+    //     } else {
+    //         issues = this.api.getIssues();
+    //     }
+    //     let issueList = [];
+    //     Object.keys(issues).forEach( (issueId) => {
+    //         issueList.push(this.createCassette(issues[issueId]));
+    //     });
+    //     this.setState({
+    //         issueList: issueList
+    //     });
+    // }
+    // storeData() {
+    //     let issues = this.state.issues;
+    //     let storeData = {};
+    //     Object.keys(issues).forEach( (issueId) => {
+    //         storeData[issueId] = {
+    //             updateDate: issues[issueId].updateDate,
+    //             updatedFlag: issues[issueId].updatedFlag,
+    //             dogEarFlag: issues[issueId].dogEarFlag,
+    //             closedFlag: issues[issueId].closedFlag,
+    //             watchFlag: issues[issueId].watchFlag,
+    //             storedItemFlag: true
+    //         }
+    //     });
+    //     store.set('issueData' + this.props.spaceId, storeData);
+    //
+    // }
     render() {
         return (
             <div>
