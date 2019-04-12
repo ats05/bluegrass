@@ -19,12 +19,12 @@ let store;
 export default class Issues extends React.Component {
     constructor(props) {
         super(props);
-        // ほんとはissuesをapiのインスタンスに渡したい
         this.state = {
             issues: '',
             issueList: '',
             singleIssue: '',
-            issueComments: ''
+            issueComments: '',
+            update: ''
         };
         store = new Store();
         let params = {
@@ -41,42 +41,54 @@ export default class Issues extends React.Component {
         if(params.service === "redmine") this.api = new RedmineApi(params, userData);
         else if(params.service === "backlog") this.api = new BacklogApi(params, userData);
         this.toggleWatch = this.toggleWatch.bind(this);
+    }
+    componentWillMount() {
         setInterval(() => { this.updateIssues();}, 60000);
         this.updateIssues();
     }
-    openIssue(e, issueId){
+    openIssue(e, index){
         e.preventDefault();
-        let issue = this.api.getIssue(issueId);
+        let issue = this.api.getIssue(this.state.issueList[index].key);
         issue.updatedFlag = false;
-        this.api.setIssue(issueId, issue);
+        this.api.setIssue(issue.id, issue);
         this.setState({singleIssue: issue});
+        this.updateIssueList(index, issue);
 
-        this.api.issue(issueId).then((response) => {
+        this.api.issue(issue.id).then((response) => {
             this.setState({singleIssue: response});
         });
     }
-    toggleWatch(e, issueId) {
-        e.preventDefault();
-        let issue = this.api.getIssue(issueId);
-        issue.watchFlag = !issue.watchFlag;
-        this.api.setIssue(issueId, issue);
+    toggleWatch(e, index) {
 
-        if(issue.watchFlag) this.api.watchIssue(issueId);
-        else this.api.unWatchIssue(issueId);
+        e.preventDefault();
+        let issue = this.api.getIssue(this.state.issueList[index].key);
+        issue.watchFlag = !issue.watchFlag;
+        this.api.setIssue(issue.id, issue);
+        this.updateIssueList(index, issue);
+
+        if(issue.watchFlag) this.api.watchIssue(issue.id);
+        else this.api.unWatchIssue(issue.id);
         // カセットにクリックイベントが行かないように止める
         e.stopPropagation();
     }
-    toggleDogEar(e, issue) {
+    toggleDogEar(e, index) {
         e.preventDefault();
-        let issues = this.state.issues;
-        issues[issue.id].dogEarFlag = !issues[issue.id].dogEarFlag;
-        this.setState({
-            issues: issues,
-        });
+        let issue = this.api.getIssue(this.state.issueList[index].key);
+        issue.dogEarFlag = !issue.dogEarFlag;
+        this.api.setIssue(issue.id, issue);
+
+        this.updateIssueList(index, issue);
+
         // カセットにクリックイベントが行かないように止める
-        // e.stopPropagation();
+        e.stopPropagation();
     }
 
+    // チケット一覧更新
+    updateIssueList(index, issue) {
+        let newIssueList = Object.assign([], this.state.issueList);
+        newIssueList[index] = this.createCassette(index, issue);
+        this.setState({issueList: newIssueList});
+    }
     closeIssue(){
         console.log(this);
         this.setState({singleIssue: ""});
@@ -89,7 +101,7 @@ export default class Issues extends React.Component {
             let issues = this.api.getIssues();
             let issueList = [];
             Object.keys(issues).forEach( (issueId) => {
-                issueList.push(this.createCassette(issues[issueId]));
+                issueList.push(this.createCassette(issueList.length, issues[issueId]));
             });
             this.setState({
                 issueList: issueList
@@ -141,7 +153,7 @@ export default class Issues extends React.Component {
             </div>
         );
     }
-    createCassette(issue) {
+    createCassette(index, issue) {
         let moment = Moment.now();
         let inProgress = Moment(issue.startDate) <= moment;
         let expired = moment >= Moment(issue.endDate);
@@ -180,7 +192,7 @@ export default class Issues extends React.Component {
             <div className={statusClass} key={issue.id}>
                 <ListItem
                     button
-                    onClick={e => this.openIssue(e, issue.id)}>
+                    onClick={e => this.openIssue(e, index)}>
                     {/*</Avatar>*/}
                     <ListItemText
                         primary={primaryText}
@@ -189,12 +201,12 @@ export default class Issues extends React.Component {
                 <span className="issueItems__dogEarButton"></span>
                 <div
                     className={classnames("issueItems__watcher", {"issueItems__watcher--watch": issue.watchFlag})}
-                    onClick={e => this.toggleWatch(e, issue.id)}>
+                    onClick={e => this.toggleWatch(e, index)}>
                     <FontAwesomeIcon icon={fasStar}/>
                 </div>
                 <div
                     className="issueItems__dogEarButton"
-                    onClick={e => this.toggleDogEar(e, issue.id)}>
+                    onClick={e => this.toggleDogEar(e, index)}>
                 </div>
             </div>
         );
