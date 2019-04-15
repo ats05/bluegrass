@@ -79,8 +79,3 @@ app.on('certificate-error', function(event, webContents, url, error, certificate
         });
     }
 });
-
-app.on('login', function(event, webContents, request, authInfo, callback) {
-    event.preventDefault();
-    callback('UU143986', 'vivi8510');
-});
