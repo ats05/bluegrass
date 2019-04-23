@@ -5,7 +5,6 @@ import Moment from 'moment';
 const PROJECT_COLOR_MAX = 12;
 
 let path = {};
-let userId = '';
 let assignedProjects = [];
 
 
@@ -26,8 +25,6 @@ export default class Api {
     compareUpdates(currentIssues, updates){
         let updatedIds = [];
 
-        console.log(currentIssues);
-
         Object.keys(updates).forEach( (updateId) => {
             let update = updates[updateId];
             if(currentIssues[update.id]) {
@@ -37,7 +34,6 @@ export default class Api {
                 update.closedFlag = old.closedFlag;
                 update.watchFlag = old.watchFlag;
                 if(Moment(update.updateDate) > Moment(old.updateDate)) {
-                    update.updatedFlag = true;
                     updatedIds.push(update.id.toString());
                     currentIssues[update.id] = update;
                 }
@@ -53,18 +49,29 @@ export default class Api {
             }
         });
 
-        // updatesの中になかったものはクローズフラグを立てる
-        // 一次対応；保存済みチケットの中で完了してたものは一覧から削除
-        // TODO 完了なのか、担当変更なのか確認できるようにする
-        // Object.keys(currentIssues).forEach((issueId) => {
-        //     if(!updatedIds.includes(issueId)) {
-        //         if(currentIssues[issueId].storedItemFlag) delete currentIssues[issueId];
-        //         else currentIssues[issueId].closedFlag = true;
-        //     }
-        // });
-        this.issuesObject = currentIssues;
+        this.issuesObject = Object.assign([], currentIssues);
 
         // return currentIssues;
+    }
+
+    // チケット一覧を返す
+    getIssues() {
+        return this.issuesObject;
+    }
+    // チケット単品を返す
+    getIssue(issueId) {
+        return this.issuesObject[issueId];
+    }
+    // 指定IDのチケットを更新する（リモートも更新）
+    setIssue(issue, issueId = null) {
+        if (issueId == null) issueId = issue.id;
+        return this.issuesObject[issueId];
+    }
+    popIssue(issueId) {
+        delete this.issuesObject[issueId];
+    }
+    getId(){
+        return this.id;
     }
 
 }

@@ -48,30 +48,17 @@ export default class Spaces extends React.Component {
         }
     }
 
+
+
     render() {
+        console.log(this.state);
 
         // TODO ここら辺なんとかする
         // TODO Spaceの追加機能
         if(noConfig) return <NewSpaces complete={() => this.loadConfig()} spaceId={this.state.spacesLength}/>;
 
         return (
-            <div className="spaces">
-                <div className="spaces__tabArea">
-                    <div className="spaces__tab">
-                        <span  className="spaces__tabItem">
-                            <FontAwesomeIcon icon={faUser}/>
-                        </span>
-                    </div>
-                    <div className="spaces__tab">
-                        <span  className="spaces__tabItem">
-                            <FontAwesomeIcon icon={fasStar}/>
-                        </span>
-                    </div>
-                </div>
-                <div className="spaces__issueArea">
-                    <Issues config={spaces[0]} spaceId="0"/>
-                </div>
-            </div>
+            <Issues config={spaces[0]} spaceId="0"/>
         );
     }
 }
