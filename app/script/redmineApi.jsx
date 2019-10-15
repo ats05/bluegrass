@@ -82,6 +82,22 @@ export default class RedmineApi extends Api{
             ;
         });
     }
+    _currentIssues() {
+
+        // 死んでるチケット一覧を取得
+        let params = {
+            issue_id: Object.keys(this.issuesObject).join(",")
+        };
+        let payload = Object.assign(params, this.params);
+
+        return new Promise( (resolve, reject) => {
+            axios.get(this.getUrl(path.issues), {params: payload})
+                .then(response => resolve(this.parseIssues(response)))
+                .catch(error => reject(error))
+            ;
+            // 全部のチケット
+        });
+    }
     issue(issueId) {
         let params = {
             id: issueId,
@@ -102,7 +118,8 @@ export default class RedmineApi extends Api{
     各種Issues関数でPromiseを返す→解決されたら全部まとめて返す
      */
     update() {
-        return Promise.all([
+
+        let promiseList = [
             this._getIssues().then( (response) => {
                 console.log("get assigned issues");
                 console.log(response);
@@ -113,20 +130,25 @@ export default class RedmineApi extends Api{
                 console.log(response);
                 this.compareUpdates(this.issuesObject, response);
             }, (e) => {console.log(e)})
-        ]);
-    }
-    // チケット一覧を返す
-    getIssues() {
-        return this.issuesObject;
-    }
-    // チケット単品を返す
-    getIssue(issueId) {
-        return this.issuesObject[issueId];
-    }
-    // 指定IDのチケットを更新する（リモートも更新）
-    setIssue(issue, issueId = null) {
-        if (issueId == null) issueId = issue.id;
-        return this.issuesObject[issueId];
+        ];
+
+        // 既存のチケット情報が手元にある場合、チェック
+        // if(Object.keys(this.issuesObject).length > 1) {
+            // promiseList.push(this._watchIssues().then( (response) => {
+            //     Redmineの場合、完了チケットは返ってこないので、idで比較して完了フラグを立てる
+                // let currentIds = Object.keys(this.issuesObject);
+                // let responseIds = Object.keys(response);
+                //
+                // Object.keys(currentIds).forEach( (currentId) => {
+                //     if( !responseIds.includes(currentId)) {
+                //         this.issuesObject[currentId].closedFlag = true;
+                //     }
+                // });
+            // }, (e) => {console.log(e)}))
+        // }
+
+
+        return Promise.all(promiseList).then();
     }
     watchIssue(issueId) {
         let params = {
@@ -164,13 +186,16 @@ export default class RedmineApi extends Api{
         params = Object.assign({
             updatedFlag: false,
             dogEarFlag: false,
-            closedFlag: false,
-            watchFlag : false
+            closedFlag: issue.closed && Moment(issue.closed) > new Moment(),
+            watchFlag : false,
+            aliveFlag: true,        // 通常に取得できたチケットかどうか
         }, params);
+
         return {
             id: issue.id,
             title: issue.subject,
             createDate: issue.created_on,
+            closeDate: issue.closed ? issue.closed : null,
             startDate: issue.start_date,
             updateDate: issue.updated_on,
             endDate: issue.due_date,
@@ -188,8 +213,9 @@ export default class RedmineApi extends Api{
             comments: this._parseComments(issue.journals),
             updatedFlag: false,
             dogEarFlag: false,
-            closedFlag: false,
-            watchFlag: params.watchFlag
+            closedFlag: params.closedFlag,
+            watchFlag: params.watchFlag,
+            aliveFlag: params.aliveFlag
         };
     }
     _parseComments(journals) {

@@ -15,6 +15,9 @@ import Store from 'electron-config';
 
 
 let store;
+const MYSELF_VALUE = 0;
+const WATCHING_VALUE = 1;
+const DOGEAR_VALUE = 2;
 
 export default class Issues extends React.Component {
     constructor(props) {
@@ -24,7 +27,8 @@ export default class Issues extends React.Component {
             issueList: '',
             singleIssue: '',
             issueComments: '',
-            update: ''
+            update: '',
+            filter: MYSELF_VALUE
         };
         store = new Store();
         let params = {
@@ -51,15 +55,19 @@ export default class Issues extends React.Component {
         let issue = this.api.getIssue(this.state.issueList[index].key);
         issue.updatedFlag = false;
         this.api.setIssue(issue.id, issue);
-        this.setState({singleIssue: issue});
+        if(!issue.closedFlag) this.setState({singleIssue: issue});
+        else this.api.popIssue(issue.id);
         this.updateIssueList(index, issue);
 
         this.api.issue(issue.id).then((response) => {
             this.setState({singleIssue: response});
+            if(response.closedFlag) {
+                this.api.popIssue(response.id)
+            }
         });
     }
-    toggleWatch(e, index) {
 
+    toggleWatch(e, index) {
         e.preventDefault();
         let issue = this.api.getIssue(this.state.issueList[index].key);
         issue.watchFlag = !issue.watchFlag;
@@ -90,7 +98,6 @@ export default class Issues extends React.Component {
         this.setState({issueList: newIssueList});
     }
     closeIssue(){
-        console.log(this);
         this.setState({singleIssue: ""});
     }
 
@@ -99,16 +106,25 @@ export default class Issues extends React.Component {
         this.api.update().then(() => {
             // この時点でthis.api.getIssues()は最新全チケット一覧を返してくれる
             let issues = this.api.getIssues();
-            let issueList = [];
-            Object.keys(issues).forEach( (issueId) => {
-                issueList.push(this.createCassette(issueList.length, issues[issueId]));
-            });
             this.setState({
-                issueList: issueList
+                issueList: this.reloadList(issues, this.state.filter)
             });
         });
-
     }
+
+    reloadList(issues, filter) {
+        let issueList = [];
+        Object.keys(issues).forEach( (issueId) => {
+            // TODO 分岐方法が汚い。
+            if(filter == MYSELF_VALUE && issues[issueId].assigneeId != this.api.getId()) return;
+            if(filter == WATCHING_VALUE && !issues[issueId].watchFlag) return;
+            if(filter == DOGEAR_VALUE && !issues[issueId].dogEarFlag) return;
+            issueList.push(this.createCassette(issueList.length, issues[issueId]));
+        });
+        return issueList;
+    }
+
+
     //
     // // 保存してあるチケットをチェック
     // restoreData(){
@@ -143,16 +159,7 @@ export default class Issues extends React.Component {
     //     store.set('issueData' + this.props.spaceId, storeData);
     //
     // }
-    render() {
-        return (
-            <div>
-                <List>
-                    {this.state.issueList}
-                </List>
-                <SingleIssue api={this.api} issue={this.state.singleIssue} closeIssue={() => this.closeIssue()}/>
-            </div>
-        );
-    }
+
     createCassette(index, issue) {
         let moment = Moment.now();
         let inProgress = Moment(issue.startDate) <= moment;
@@ -212,5 +219,50 @@ export default class Issues extends React.Component {
         );
     }
 
+    filter(e) {
+        e.preventDefault();
+        this.setState({filter: event.target.value});
+        let issues = this.api.getIssues();
+        this.setState({
+            issueList: this.reloadList(issues, event.target.value)
+        });
+    }
+
+    // spacesからタブUIを移植
+    // TODO クラス名は直す
+    render() {
+        return (
+            <div className="spaces">
+                <div className="spaces__tabArea">
+                    <input type="radio" name="tab" value={MYSELF_VALUE} id="tabMyself" onClick={e => this.filter(e)}/>
+                    <label htmlFor="tabMyself" className={classnames("spaces__tab", {"spaces__tab--active": this.state.filter == MYSELF_VALUE})}>
+                        <span  className="spaces__tabItem">
+                            <FontAwesomeIcon icon={faUser}/>
+                        </span>
+                    </label>
+                    <input type="radio" name="tab" value={WATCHING_VALUE} id="tabWatching" onClick={e => this.filter(e)}/>
+                    <label htmlFor="tabWatching" className={classnames("spaces__tab", {"spaces__tab--active": this.state.filter == WATCHING_VALUE})}>
+                        <span  className="spaces__tabItem">
+                            <FontAwesomeIcon icon={fasStar}/>
+                        </span>
+                    </label>
+                    <input type="radio" name="tab" value={DOGEAR_VALUE} id="tabDogear" onClick={e => this.filter(e)}/>
+                    <label htmlFor="tabDogear" className={classnames("spaces__tab", {"spaces__tab--active": this.state.filter == DOGEAR_VALUE})}>
+                        <span  className="spaces__tabItem">
+                            {/*<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" preserveAspectRatio="xMidYMid meet" viewBox="173.28571428571422 263.1655540720961 84.80106809078768 84.80106809078774" width="16" height="16"><defs><path d="M255.09 264.17L174.29 344.97L174.29 264.17L255.09 264.17Z" id="bhrrU0wbx"></path></defs><g><g><use xlink:href="#bhrrU0wbx" opacity="1" fill-opacity="1"></use></g></g></svg>*/}
+                        </span>
+                    </label>
+                </div>
+                <div className="spaces__issueArea">
+                    <div>
+                        <List>
+                            {this.state.issueList}
+                        </List>
+                        <SingleIssue api={this.api} issue={this.state.singleIssue} closeIssue={() => this.closeIssue()}/>
+                    </div>
+                </div>
+            </div>
+        );
+    }
 
 }

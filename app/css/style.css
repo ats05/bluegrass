@@ -61,6 +61,8 @@ svg {
     flex-flow: column nowrap;
     flex-shrink: 0;
     background-color: #f8f8f8; }
+  .spaces input {
+    display: none; }
   .spaces__tab {
     border-radius: 8px 0 0 8px;
     display: flex;
@@ -68,6 +70,7 @@ svg {
     width: 30px;
     flex: 1;
     color: #666666;
+    fill: currentColor;
     background-color: #b0b0b0; }
     .spaces__tabItem {
       display: inline-block;
@@ -75,7 +78,8 @@ svg {
     .spaces__tab:hover {
       background-color: #C9F0FF; }
       .spaces__tab:hover .spaces__tabItem {
-        color: #0EB1D2; }
+        color: #0EB1D2;
+        fill: currentColor; }
     .spaces__tab--active {
       transition: background-color 150ms cubic-bezier(255, 255, 255, 1) 0ms;
       background-color: #ffffff; }
@@ -226,7 +230,7 @@ svg {
     border-width: 0 0 15px 15px;
     z-index: 100; }
   .issueItems__content--closed {
-    background-color: #b0b0b0;
+    background-color: #fafafa;
     color: #666666; }
 
 .issueItems__header {
@@ -325,7 +329,8 @@ svg {
   .singleIssue__description h3 {
     margin: 8px 0 5px; }
   .singleIssue__description ol, .singleIssue__description ul, .singleIssue__description p {
-    margin: 5px 0; }
+    margin: 15px 0;
+    line-height: 1.8; }
   .singleIssue__description pre {
     font-family: 'Inconsolata', monospace;
     margin: 5px 0;

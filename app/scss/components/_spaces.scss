@@ -9,6 +9,9 @@
     flex-shrink: 0;
     background-color: $color-backgroundGray;
   }
+  & input {
+    display: none;
+  }
   &__tab {
     border-radius: 8px 0 0 8px;
     display: flex;
@@ -16,6 +19,7 @@
     width: 30px;
     flex: 1;
     color: $color-darkGray;
+    fill: currentColor;
     background-color:$color-lightGray;
     &Item {
       display: inline-block;
@@ -25,6 +29,7 @@
       background-color: $color-hover;
       & .spaces__tabItem {
         color: $mainColor-accent;
+        fill: currentColor;
       }
     }
     &--active {
