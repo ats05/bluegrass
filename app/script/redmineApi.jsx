@@ -83,6 +83,8 @@ export default class RedmineApi extends Api{
         });
     }
     _currentIssues() {
+
+        // 死んでるチケット一覧を取得
         let params = {
             issue_id: Object.keys(this.issuesObject).join(",")
         };
@@ -90,10 +92,10 @@ export default class RedmineApi extends Api{
 
         return new Promise( (resolve, reject) => {
             axios.get(this.getUrl(path.issues), {params: payload})
-                // Redmineの場合、完了チケットは返ってこない
                 .then(response => resolve(this.parseIssues(response)))
                 .catch(error => reject(error))
             ;
+            // 全部のチケット
         });
     }
     issue(issueId) {
@@ -145,7 +147,8 @@ export default class RedmineApi extends Api{
             // }, (e) => {console.log(e)}))
         // }
 
-        return Promise.all(promiseList);
+
+        return Promise.all(promiseList).then();
     }
     watchIssue(issueId) {
         let params = {
@@ -184,7 +187,8 @@ export default class RedmineApi extends Api{
             updatedFlag: false,
             dogEarFlag: false,
             closedFlag: issue.closed && Moment(issue.closed) > new Moment(),
-            watchFlag : false
+            watchFlag : false,
+            aliveFlag: true,        // 通常に取得できたチケットかどうか
         }, params);
 
         return {
@@ -210,7 +214,8 @@ export default class RedmineApi extends Api{
             updatedFlag: false,
             dogEarFlag: false,
             closedFlag: params.closedFlag,
-            watchFlag: params.watchFlag
+            watchFlag: params.watchFlag,
+            aliveFlag: params.aliveFlag
         };
     }
     _parseComments(journals) {

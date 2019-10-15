@@ -27,6 +27,7 @@ export default class Api {
 
         Object.keys(updates).forEach( (updateId) => {
             let update = updates[updateId];
+            update.recievedFlag = true;
             if(currentIssues[update.id]) {
                 let old = currentIssues[update.id];
                 update.updatedFlag = old.updatedFlag;
@@ -46,6 +47,12 @@ export default class Api {
                 update.updatedFlag = true;
                 updatedIds.push(update.id.toString());
                 currentIssues[update.id] = update;
+            }
+        });
+
+        Object.keys(currentIssues).forEach( (issueIndex) => {
+            if(!currentIssues[issueIndex].recievedFlag) {
+                currentIssues[issueIndex].closedFlag = true;
             }
         });
 

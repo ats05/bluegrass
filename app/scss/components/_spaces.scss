@@ -19,6 +19,7 @@
     width: 30px;
     flex: 1;
     color: $color-darkGray;
+    fill: currentColor;
     background-color:$color-lightGray;
     &Item {
       display: inline-block;
@@ -28,6 +29,7 @@
       background-color: $color-hover;
       & .spaces__tabItem {
         color: $mainColor-accent;
+        fill: currentColor;
       }
     }
     &--active {

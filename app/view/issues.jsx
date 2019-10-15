@@ -17,6 +17,7 @@ import Store from 'electron-config';
 let store;
 const MYSELF_VALUE = 0;
 const WATCHING_VALUE = 1;
+const DOGEAR_VALUE = 2;
 
 export default class Issues extends React.Component {
     constructor(props) {
@@ -65,6 +66,7 @@ export default class Issues extends React.Component {
             }
         });
     }
+
     toggleWatch(e, index) {
         e.preventDefault();
         let issue = this.api.getIssue(this.state.issueList[index].key);
@@ -116,6 +118,7 @@ export default class Issues extends React.Component {
             // TODO 分岐方法が汚い。
             if(filter == MYSELF_VALUE && issues[issueId].assigneeId != this.api.getId()) return;
             if(filter == WATCHING_VALUE && !issues[issueId].watchFlag) return;
+            if(filter == DOGEAR_VALUE && !issues[issueId].dogEarFlag) return;
             issueList.push(this.createCassette(issueList.length, issues[issueId]));
         });
         return issueList;
@@ -241,6 +244,12 @@ export default class Issues extends React.Component {
                     <label htmlFor="tabWatching" className={classnames("spaces__tab", {"spaces__tab--active": this.state.filter == WATCHING_VALUE})}>
                         <span  className="spaces__tabItem">
                             <FontAwesomeIcon icon={fasStar}/>
+                        </span>
+                    </label>
+                    <input type="radio" name="tab" value={DOGEAR_VALUE} id="tabDogear" onClick={e => this.filter(e)}/>
+                    <label htmlFor="tabDogear" className={classnames("spaces__tab", {"spaces__tab--active": this.state.filter == DOGEAR_VALUE})}>
+                        <span  className="spaces__tabItem">
+                            {/*<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" preserveAspectRatio="xMidYMid meet" viewBox="173.28571428571422 263.1655540720961 84.80106809078768 84.80106809078774" width="16" height="16"><defs><path d="M255.09 264.17L174.29 344.97L174.29 264.17L255.09 264.17Z" id="bhrrU0wbx"></path></defs><g><g><use xlink:href="#bhrrU0wbx" opacity="1" fill-opacity="1"></use></g></g></svg>*/}
                         </span>
                     </label>
                 </div>
